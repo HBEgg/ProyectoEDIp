@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Structures
 {
-    class AVLNode<T>
+    public class AVLNode<T> where T : IComparable
     {
         public T Patient { get; set; }
         public int index { get; set; }
