@@ -121,6 +121,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\VaccineController.cs" />
+    <Compile Include="GenericStructures\AVLNode.cs" />
+    <Compile Include="GenericStructures\AVLTreeG.cs" />
+    <Compile Include="GenericStructures\PQNodeG.cs" />
+    <Compile Include="GenericStructures\PriorityQueueG.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -128,6 +132,7 @@
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Models\Patientinfo.cs" />
+    <Compile Include="Models\RegistrationCenter.cs" />
     <Compile Include="Models\Statistics.cs" />
     <Compile Include="Models\Vaccines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -169,6 +174,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Patient.cshtml" />
+    <Content Include="Views\Home\RegistrationCenter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -185,6 +191,12 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Structures\Structures.csproj">
+      <Project>{fa6dce27-ad52-4db6-9f55-83a5db0815dd}</Project>
+      <Name>Structures</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

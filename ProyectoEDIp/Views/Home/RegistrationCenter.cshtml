@@ -1,0 +1,153 @@
+﻿@model ProyectoEDIp.Models.RegistrationCenter
+
+@{
+    ViewBag.Title = "RegistrationCenter";
+}
+
+<h2>Registration Center</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CenterName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CenterName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VaccinesUsed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VaccinesUsed)/10
+        </dd>
+    </dl>
+</div>
+
+
+<h5><strong>Listado de camas:</strong></h5>
+@* List for the hospital's beds *@
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(Model => Model.VaccinesList.First().Availability)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.VaccinesList.First().Patient.DPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.VaccinesList.First().Patient.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.VaccinesList.First().Patient.LastName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.VaccinesList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Availability)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.LastName)
+            </td>
+            <td>
+                @Html.ActionLink("Cambiar a Vacunado", "GetVaccinated", new { code = item.Patient.DPI })
+
+            </td>
+        </tr>
+    }
+</table>
+
+
+<h5><strong>Cola de Contagiados:</strong></h5>
+
+@* Display for InfectedQueue *@
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().DPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Age)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model.InfectedList)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.DPI)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Age)
+    </td>
+</tr>}
+</table>
+
+<h5><strong>Cola de Sospechosos:</strong></h5>
+<p style="color:darkred"><strong>@TempData["Error"]</strong></p>
+<br />
+@Html.ActionLink("Realizar prueba", "Test", new { hospital = Model.CenterName })
+<br />
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(Model => Model.PatientsQueue.First().DPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.PatientsQueue.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.PatientsQueue.First().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Model => Model.PatientsQueue.First().Age)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model.PatientsList)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.DPI)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Age)
+    </td>
+</tr>}
+</table>

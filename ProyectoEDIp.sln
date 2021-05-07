@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoEDIp", "ProyectoEDIp\ProyectoEDIp.csproj", "{6DC5C22C-4D3C-47C5-B7D4-9113A742341E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{FA6DCE27-AD52-4DB6-9F55-83A5DB0815DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Structures", "Structures\Structures.csproj", "{FA6DCE27-AD52-4DB6-9F55-83A5DB0815DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
