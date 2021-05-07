@@ -5,22 +5,22 @@ using System.Web;
 
 namespace ProyectoEDIp.Helpers
 {
-    public class Singleton : ISingleton
+    public class Singleton
     {
-        private static Singleton _instance = null; 
-        public static Singleton Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new Singleton(); 
-                }
-                return _instance; 
-            }
-        }
-        public CQueue CQueue { get; set;  }
-        public CQueue[] Array { get; set; }
-        public List<Patientsinfo> Patientsinf { get; set; }
+        //private static Singleton _instance = null; 
+        //public static Singleton Instance
+        //{
+        //    get
+        //    {
+        //        if (_instance == null)
+        //        {
+        //            _instance = new Singleton(); 
+        //        }
+        //        return _instance; 
+        //    }
+        //}
+        //public CQueue CQueue { get; set;  }
+        //public CQueue[] Array { get; set; }
+        //public List<Patientsinfo> Patientsinf { get; set; }
     }
 }

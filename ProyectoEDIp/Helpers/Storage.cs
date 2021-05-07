@@ -22,6 +22,8 @@ namespace ProyectoEDIp.Helpers
         }
         public List<Patientinfo> PatientList = new List<Patientinfo>();
         public List<Patientinfo> InformationList = new List<Patientinfo>();
+        public List<Vaccines> VaccineList = new List<Vaccines>();
+        public List<Patientinfo> VaccinatedPatientList = new List<Patientinfo>();
         public int Patientswvaccineshot = 0;
         public int Patientpvaccineshot = 0;
         public int Patient2vaccineshot = 0; 

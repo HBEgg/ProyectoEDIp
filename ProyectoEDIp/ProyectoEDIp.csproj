@@ -128,6 +128,8 @@
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Models\Patientinfo.cs" />
+    <Compile Include="Models\Statistics.cs" />
+    <Compile Include="Models\Vaccines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

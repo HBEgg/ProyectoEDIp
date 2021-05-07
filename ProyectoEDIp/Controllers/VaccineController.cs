@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProyectoEDIp.Helpers;
 
 namespace ProyectoEDIp.Controllers
 {
+
     public class VaccineController : Controller
     {
-        public static List<Vaccinepatient> VaccineList = new List<Vaccinepatient>();
         public ActionResult Index()
         {
             return View();
@@ -16,14 +17,14 @@ namespace ProyectoEDIp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Description page.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contacts page.";
 
             return View();
         }
