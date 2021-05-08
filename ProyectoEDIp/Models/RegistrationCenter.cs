@@ -67,14 +67,14 @@ namespace ProyectoEDIp.Models
                 case "Quetzaltenango":
                     Departments.Add("Quetzaltenango");
                     break;
-                case "Quiche":
+                case "Quiché":
                     Departments.Add("Quiché");
                     break;
                 case "Retalhuleu":
                     Departments.Add("Retalhuleu");
                     break;
-                case "Sacatepequez":
-                    Departments.Add("Sacatepequez");
+                case "Sacatepéquez":
+                    Departments.Add("Sacatepéquez");
                     break;
                 case "San Marcos":
                     Departments.Add("San Marcos");
@@ -88,11 +88,11 @@ namespace ProyectoEDIp.Models
                 case "Quiquimula":
                     Departments.Add("Quiquimula");
                     break;
-                case "Solola":
-                    Departments.Add("Quetzaltenango");
+                case "Sololá":
+                    Departments.Add("Sololá");
                     break;
-                case "Totonicapan":
-                    Departments.Add("Totonicapan");
+                case "Totonicapán":
+                    Departments.Add("Totonicapán");
                     break;
             }
         }

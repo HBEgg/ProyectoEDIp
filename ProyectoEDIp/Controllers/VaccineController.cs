@@ -496,9 +496,11 @@ namespace ProyectoEDIp.Controllers
             return -1;
         }
 
+
         public ActionResult Test(string registrationCenter)
         {
             var RC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == registrationCenter);
+            
             if (RC.VaccinationQueueFull())
             {
                 return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
@@ -587,7 +589,7 @@ namespace ProyectoEDIp.Controllers
                     Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    Storage.Instance.CountryStatistics.Infected++;
+                    Storage.Instance.CountryStatistics.NotVaccinated++;
                     if (RC.NoVaccines())
                     {
                         Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).VaccinationQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
@@ -632,7 +634,7 @@ namespace ProyectoEDIp.Controllers
             Storage.Instance.PatientsByDPI.ChangeValue(Patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
             Storage.Instance.PatientsByName.ChangeValue(Patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
             Storage.Instance.PatientsByLastName.ChangeValue(Patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
-            Storage.Instance.CountryStatistics.Infected--;
+            Storage.Instance.CountryStatistics.NotVaccinated--;
             Storage.Instance.CountryStatistics.Vaccinated++;
             var RC = Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter);
             if (RC.VaccinationQueue.Root != null)
