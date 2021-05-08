@@ -70,7 +70,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else if (current.Priority == current.Father.Priority)
                 {
-                    if (current.DatePriority < current.Father.DatePriority)
+                    if (current.DPriority < current.Father.DPriority)
                     {
                         ChangeNodes(current);
                     }
@@ -93,7 +93,7 @@ namespace ProyectoEDIp.GenericStructures
                     }
                     else if (current.Priority == current.RightSon.Priority)
                     {
-                        if (current.DatePriority > current.RightSon.DatePriority)
+                        if (current.DPriority > current.RightSon.DPriority)
                         {
                             ChangeNodes(current.RightSon);
                             OrderUptoDown(current.RightSon);
@@ -109,7 +109,7 @@ namespace ProyectoEDIp.GenericStructures
                     }
                     else if (current.Priority == current.LeftSon.Priority)
                     {
-                        if (current.DatePriority > current.LeftSon.DatePriority)
+                        if (current.DPriority > current.LeftSon.DPriority)
                         {
                             ChangeNodes(current.LeftSon);
                             OrderUptoDown(current.LeftSon);
@@ -118,7 +118,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else
                 {
-                    if (current.LeftSon.DatePriority > current.RightSon.DatePriority)
+                    if (current.LeftSon.DPriority > current.RightSon.DPriority)
                     {
                         if (current.Priority > current.RightSon.Priority)
                         {
@@ -127,7 +127,7 @@ namespace ProyectoEDIp.GenericStructures
                         }
                         else if (current.Priority == current.RightSon.Priority)
                         {
-                            if (current.DatePriority > current.RightSon.DatePriority)
+                            if (current.DPriority > current.RightSon.DPriority)
                             {
                                 ChangeNodes(current.RightSon);
                                 OrderUptoDown(current.RightSon);
@@ -143,7 +143,7 @@ namespace ProyectoEDIp.GenericStructures
                         }
                         else if (current.Priority == current.LeftSon.Priority)
                         {
-                            if (current.DatePriority > current.LeftSon.DatePriority)
+                            if (current.DPriority > current.LeftSon.DPriority)
                             {
                                 ChangeNodes(current.LeftSon);
                                 OrderUptoDown(current.LeftSon);
@@ -161,7 +161,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else if (current.Priority == current.RightSon.Priority)
                 {
-                    if (current.DatePriority > current.RightSon.DatePriority)
+                    if (current.DPriority > current.RightSon.DPriority)
                     {
                         ChangeNodes(current.RightSon);
                         OrderUptoDown(current.RightSon);
@@ -177,7 +177,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else if (current.Priority == current.LeftSon.Priority)
                 {
-                    if (current.DatePriority > current.LeftSon.DatePriority)
+                    if (current.DPriority > current.LeftSon.DPriority)
                     {
                         ChangeNodes(current.LeftSon);
                         OrderUptoDown(current.LeftSon);
@@ -191,15 +191,15 @@ namespace ProyectoEDIp.GenericStructures
         {
             var Priority1 = node.Priority;
             var Key1 = node.Key;
-            var Date1 = node.DatePriority;
+            var Date1 = node.DPriority;
             var Patient1 = node.Patient;
             node.Priority = node.Father.Priority;
             node.Key = node.Father.Key;
-            node.DatePriority = node.Father.DatePriority;
+            node.DPriority = node.Father.DPriority;
             node.Patient = node.Father.Patient;
             node.Father.Priority = Priority1;
             node.Father.Key = Key1;
-            node.Father.DatePriority = Date1;
+            node.Father.DPriority = Date1;
             node.Father.Patient = Patient1;
 
         }
@@ -217,7 +217,7 @@ namespace ProyectoEDIp.GenericStructures
             Root.Key = LastNodeCopy.Key;
             Root.Priority = LastNodeCopy.Priority;
             Root.Patient = LastNodeCopy.Patient;
-            Root.DatePriority = LastNodeCopy.DatePriority;
+            Root.DPriority = LastNodeCopy.DPriority;
             if (LastNode.Father == null)
             {
                 Root = null;

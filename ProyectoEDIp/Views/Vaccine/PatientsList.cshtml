@@ -14,7 +14,7 @@
 <p style="color:darkred"><strong>@TempData["Error"]</strong></p>
 
 
-@using (Html.BeginForm("PatientsList", "RegistrationCenter", FormMethod.Get))
+@using (Html.BeginForm("PatientsList", "Vaccine", FormMethod.Get))
 {
     <em><strong>Criteria:</strong></em> @* DropDownList that shows the search criteria. *@
     <select class="form-control" id="criteria" name="criteria">

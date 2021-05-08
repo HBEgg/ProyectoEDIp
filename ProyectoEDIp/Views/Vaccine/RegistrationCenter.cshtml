@@ -28,8 +28,7 @@
 </div>
 
 
-<h5><strong>Listado de camas:</strong></h5>
-@* List for the hospital's beds *@
+
 <br />
 <table class="table">
     <tr>
@@ -79,21 +78,21 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().DPI)
+            @Html.DisplayNameFor(Model => Model.VaccinationQueue.First().DPI)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Name)
+            @Html.DisplayNameFor(Model => Model.VaccinationQueue.First().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().LastName)
+            @Html.DisplayNameFor(Model => Model.VaccinationQueue.First().LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(Model => Model.InfectedQueue.First().Age)
+            @Html.DisplayNameFor(Model => Model.VaccinationQueue.First().Age)
         </th>
 
     </tr>
 
-    @foreach (var item in Model.InfectedList)
+    @foreach (var item in Model.VaccinationList)
     {
         <tr>
             <td>

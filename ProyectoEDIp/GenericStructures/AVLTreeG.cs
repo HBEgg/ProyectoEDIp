@@ -108,7 +108,7 @@ namespace ProyectoEDIp.GenericStructures
         {
             if (current.Left != null)
             {
-                return ReplaceLeft(current.Left);
+                return ReplaceRight(current.Left);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else
                 {
-                    RightRot(node);
+                    LeftRot(node);
                 }
             }
             if (node.Parent != null)

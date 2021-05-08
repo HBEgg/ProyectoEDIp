@@ -91,7 +91,7 @@ namespace ProyectoEDIp.Controllers
         {
             try
             {
-                if (HasWrongCharacter(collection["Name"]) || HasWrongCharacter(collection["LastName"]) || HasWrongCharacter(collection["Municipio"]) || HasWrongCharacter(collection["Symptoms"]) || HasWrongCharacter(collection["Infection_Description"]))
+                if (HasWrongCharacter(collection["Name"]) || HasWrongCharacter(collection["LastName"]) || HasWrongCharacter(collection["Municipio"]) || HasWrongCharacter(collection["Symptoms"]) || HasWrongCharacter(collection["InfectionDescription"]))
                 {
                     ModelState.AddModelError("Name", "Por favor ingrese datos no numéricos en los campos pertinentes.");
                     return View("RegisterPatient");

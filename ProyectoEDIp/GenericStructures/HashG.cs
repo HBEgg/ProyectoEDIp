@@ -8,6 +8,7 @@ namespace ProyectoEDIp.GenericStructures
 {
     public class HashG<T> where T : IComparable
     {
+
         public int Length;
         public HashNode<T>[] HashTable;
 
@@ -39,88 +40,6 @@ namespace ProyectoEDIp.GenericStructures
             }
         }
 
-        public HashNode<T> Search(string searchedKey)
-        {
-            int code = GetCode(searchedKey);
-
-            if (HashTable[code] != null)
-            {
-
-                if (HashTable[code].Key != searchedKey)
-                {
-                    HashNode<T> Aux = HashTable[code];
-                    while (Aux.Key != searchedKey && Aux.Next != null)
-                    {
-                        Aux = Aux.Next;
-                    }
-                    if (Aux.Key == searchedKey)
-                    {
-                        return Aux;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    return HashTable[code];
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-        private int GetCode(string Key)
-        {
-            int length = Key.Length;
-            int code = 0;
-            for (int i = 0; i < length; i++)
-            {
-                code += Convert.ToInt32(Key.Substring(i, 1));
-            }
-            code = (code * 7) % Length;
-            return code;
-        }
-
-        public List<HashNode<T>> GetAsNodes()
-        {
-            var returnList = new List<HashNode<T>>();
-            var currentNode = new HashNode<T>();
-            foreach (var task in HashTable)
-            {
-                currentNode = task;
-                while (currentNode != null)
-                {
-                    returnList.Add(currentNode);
-                    currentNode = currentNode.Next;
-                }
-            }
-            return returnList;
-        }
-
-
-        public List<T> GetFilteredList(Func<T, bool> predicate)
-        {
-            List<T> FilteredList = new List<T>();
-            var currentNode = new HashNode<T>();
-            foreach (var task in HashTable)
-            {
-                currentNode = task;
-                while (currentNode != null)
-                {
-                    if (predicate(currentNode.Value))
-                    {
-                        FilteredList.Add(currentNode.Value);
-                    }
-                    currentNode = currentNode.Next;
-                }
-            }
-            return FilteredList;
-        }
-
-
         public void Insert(T InsertV, string key, int multiplier)
         {
             HashNode<T> T1 = new HashNode<T>();
@@ -139,10 +58,6 @@ namespace ProyectoEDIp.GenericStructures
                     else
                     {
                         code += 1;
-                        //if (code == Originalcode)
-                        //{
-                        //    avoid enqueue
-                        //}
                     }
                 }
                 if (HashTable[code] == null)
@@ -155,6 +70,7 @@ namespace ProyectoEDIp.GenericStructures
                 HashTable[code] = T1;
             }
         }
+
 
         public HashNode<T> Search(string searchedKey, int multiplier)
         {
@@ -199,6 +115,42 @@ namespace ProyectoEDIp.GenericStructures
 
         }
 
+
+        public HashNode<T> Search(string searchedKey)
+        {
+            int code = GetCode(searchedKey);
+
+            if (HashTable[code] != null)
+            {
+
+                if (HashTable[code].Key != searchedKey)
+                {
+                    HashNode<T> Aux = HashTable[code];
+                    while (Aux.Key != searchedKey && Aux.Next != null)
+                    {
+                        Aux = Aux.Next;
+                    }
+                    if (Aux.Key == searchedKey)
+                    {
+                        return Aux;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return HashTable[code];
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
         public void Delete(T value, string searchedKey, int multiplier)
         {
             int code = GetCode(value, searchedKey, multiplier);
@@ -240,6 +192,18 @@ namespace ProyectoEDIp.GenericStructures
                     }
                 }
             }
+        }
+
+        private int GetCode(string Key)
+        {
+            int length = Key.Length;
+            int code = 0;
+            for (int i = 0; i < length; i++)
+            {
+                code += Convert.ToInt32(Key.Substring(i, 1));
+            }
+            code = (code * 7) % Length;
+            return code;
         }
 
         private int GetCode(string Key, int Multiplier)
@@ -297,11 +261,45 @@ namespace ProyectoEDIp.GenericStructures
             return code;
         }
 
+        public List<HashNode<T>> GetAsNodes()
+        {
+            var returnList = new List<HashNode<T>>();
+            var currentNode = new HashNode<T>();
+            foreach (var task in HashTable)
+            {
+                currentNode = task;
+                while (currentNode != null)
+                {
+                    returnList.Add(currentNode);
+                    currentNode = currentNode.Next;
+                }
+            }
+            return returnList;
+        }
+
+        public List<T> GetFilterList(Func<T, bool> predicate)
+        {
+            List<T> FiltedList = new List<T>();
+            var currentNode = new HashNode<T>();
+            foreach (var task in HashTable)
+            {
+                currentNode = task;
+                while (currentNode != null)
+                {
+                    if (predicate(currentNode.Value))
+                    {
+                        FiltedList.Add(currentNode.Value);
+                    }
+                    currentNode = currentNode.Next;
+                }
+            }
+            return FiltedList;
+        }
+
         public HashNode<T> GetT(int pos, int block)
         {
             return HashTable[pos + block];
         }
-
 
     }
 }

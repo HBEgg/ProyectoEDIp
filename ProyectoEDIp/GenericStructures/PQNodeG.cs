@@ -14,11 +14,11 @@ namespace ProyectoEDIp.GenericStructures
         public T Patient;
         public string Key;
         public int Priority;
-        public DateTime DatePriority;
+        public DateTime DPriority;
         public PQNodeG(string key, DateTime Date, T patient, int priority)
         {
             Key = key;
-            DatePriority = Date;
+            DPriority = Date;
             Patient = patient;
             Priority = priority;
         }

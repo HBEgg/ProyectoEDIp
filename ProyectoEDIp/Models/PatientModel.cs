@@ -11,7 +11,6 @@ namespace ProyectoEDIp.Models
         public string Departamento { get; set; }
         [Display(Name = "Municipio")]
         public string Municipio { get; set; }
-        public int Time { get; set; }
         [Display(Name = "Symptoms")]
         public string Symptoms { get; set; }
         [Display(Name = "Infection_Description")]
