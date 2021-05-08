@@ -226,6 +226,7 @@
     <Content Include="Views\Vaccine\RegistrationCenterList.cshtml" />
     <Content Include="Views\Vaccine\Statistics.cshtml" />
     <Content Include="Views\Vaccine\RegisterPatient.cshtml" />
+    <Content Include="Views\Vaccine\ChartsVaccination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

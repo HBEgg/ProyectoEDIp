@@ -7,6 +7,7 @@ using PagedList;
 using ProyectoEDIp.Helpers;
 using ProyectoEDIp.GenericStructures;
 using ProyectoEDIp.Models;
+using DotNet.Highcharts;
 
 namespace ProyectoEDIp.Controllers
 {
@@ -384,55 +385,55 @@ namespace ProyectoEDIp.Controllers
         //    return View(Storage.Instance.PatientIDList.Values.ToList());
         //}
 
-        //public ActionResult Statistics()
-        //{
-        //    Highcharts ColumnChart = new Highcharts("ColumnChart");
-        //    ColumnChart.InitChart(new DotNet.Highcharts.Options.Chart()
-        //    {
-        //        Type = DotNet.Highcharts.Enums.ChartTypes.Column,
-        //        BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.Color.BlanchedAlmond),
-        //        Style = "fontWeight: 'Bold' , FontSize: '17ptx'",
-        //        BorderColor = System.Drawing.Color.Azure,
-        //        BorderRadius = 0,
-        //        BorderWidth = 2,
-        //    });
-        //    ColumnChart.SetTitle(new DotNet.Highcharts.Options.Title()
-        //    {
-        //        Text = "Gráfica de Vacunación"
-        //    });
-        //    ColumnChart.SetSubtitle(new DotNet.Highcharts.Options.Subtitle() // subtitulo y descripción de la gráfica 
-        //    {
-        //        Text = "Cantidad de personas vacunadas"
-        //    });
-        //    ColumnChart.SetXAxis(new DotNet.Highcharts.Options.XAxis()     //obtiene la información de los datos que irán en el eje de las x
-        //    {
-        //        Type = DotNet.Highcharts.Enums.AxisTypes.Category,
-        //        Title = new DotNet.Highcharts.Options.XAxisTitle() { Text = "Casos", Style = "fontWeight : 'bold' , fontSize: '17ptx'" },
-        //        Categories = new[] { "Ingreso de Pacientes", "Personas vacunadas" }
+        public ActionResult ChartsVaccination()
+        {
+            Highcharts ColumnChart = new Highcharts("ColumnChart");
+            ColumnChart.InitChart(new DotNet.Highcharts.Options.Chart()
+            {
+                Type = DotNet.Highcharts.Enums.ChartTypes.Column,
+                BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.Color.BlanchedAlmond),
+                Style = "fontWeight: 'Bold' , FontSize: '17ptx'",
+                BorderColor = System.Drawing.Color.Azure,
+                BorderRadius = 0,
+                BorderWidth = 2,
+            });
+            ColumnChart.SetTitle(new DotNet.Highcharts.Options.Title()
+            {
+                Text = "Gráfica de Vacunación"
+            });
+            ColumnChart.SetSubtitle(new DotNet.Highcharts.Options.Subtitle() // subtitulo y descripción de la gráfica 
+            {
+                Text = "Cantidad de personas vacunadas"
+            });
+            ColumnChart.SetXAxis(new DotNet.Highcharts.Options.XAxis()     //obtiene la información de los datos que irán en el eje de las x
+            {
+                Type = DotNet.Highcharts.Enums.AxisTypes.Category,
+                Title = new DotNet.Highcharts.Options.XAxisTitle() { Text = "Casos", Style = "fontWeight : 'bold' , fontSize: '17ptx'" },
+                Categories = new[] { "Ingreso de Pacientes", "Personas vacunadas" }
 
-        //    });
-        //    ColumnChart.SetYAxis(new DotNet.Highcharts.Options.YAxis()  //obtiene la información de los datos que irán en el eje de las y
-        //    {
-        //        Title = new DotNet.Highcharts.Options.YAxisTitle()
-        //        {
-        //            Text = "Cantidades",
-        //            Style = "fontWeight: 'bold', fontSize: '17ptx'"
-        //        },
-        //        ShowFirstLabel = true,  //muestra que los datos si se han tomado con validez 
-        //        ShowLastLabel = true,
-        //        Min = 0 //empieza desde el valor de 0
-        //    });
-        //    ColumnChart.SetLegend(new DotNet.Highcharts.Options.Legend
-        //    {
-        //        Enabled = true,
-        //        BorderColor = System.Drawing.Color.Aquamarine,
-        //        BorderRadius = 6,
-        //        BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.ColorTranslator.FromHtml("#ADE6D8")) //color verde analogo
-        //    });
-        //    return View(ColumnChart);
-        //}
-        //}
-        private int GetMultiplier(string RC)
+            });
+            ColumnChart.SetYAxis(new DotNet.Highcharts.Options.YAxis()  //obtiene la información de los datos que irán en el eje de las y
+            {
+                Title = new DotNet.Highcharts.Options.YAxisTitle()
+                {
+                    Text = "Cantidades",
+                    Style = "fontWeight: 'bold', fontSize: '17ptx'"
+                },
+                ShowFirstLabel = true,  //muestra que los datos si se han tomado con validez 
+                ShowLastLabel = true,
+                Min = 0 //empieza desde el valor de 0
+            });
+            ColumnChart.SetLegend(new DotNet.Highcharts.Options.Legend
+            {
+                Enabled = true,
+                BorderColor = System.Drawing.Color.Aquamarine,
+                BorderRadius = 6,
+                BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.ColorTranslator.FromHtml("#ADE6D8")) //color verde analogo
+            });
+            return View(ColumnChart);
+        }
+    
+    private int GetMultiplier(string RC)
         {
             switch (RC)
             {
