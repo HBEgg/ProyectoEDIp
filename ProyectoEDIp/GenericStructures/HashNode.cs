@@ -8,9 +8,9 @@ namespace ProyectoEDIp.GenericStructures
 {
     public class HashNode<T> where T : IComparable
     {
-        public string Key { get; set; }
-        public T Value { get; set; }
         public HashNode<T> Previous { get; set; }
         public HashNode<T> Next { get; set; }
+        public T Value { get; set; }
+        public string Key { get; set; }
     }
 }

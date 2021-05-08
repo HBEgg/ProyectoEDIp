@@ -10,234 +10,234 @@ namespace ProyectoEDIp.GenericStructures
     public class AVLTreeG<T> where T : IComparable
     {
         public AVLNode<T> Root;
-        private List<AVLNode<T>> ResultList;
-        public void AddPatient(T v, Comparison<T> comparison)
+        private List<AVLNode<T>> ReturningList;
+
+
+        public void AddPatient(T value, Comparison<T> comparison)
         {
-            var newN = new AVLNode<T>() { Patient = v };
-            Insert(Root, newN, comparison);
+            var newNode = new AVLNode<T>() { Patient = value };
+            Insert(Root, newNode, comparison);
 
         }
 
-        private void Insert(AVLNode<T> current, AVLNode<T> newN, Comparison<T> comparison)
+        private void Insert(AVLNode<T> currentNode, AVLNode<T> newNode, Comparison<T> comparison)
         {
 
-            if (current == null && current == Root)
+            if (currentNode == null && currentNode == Root)
             {
-                current = newN;
-                Root = current;
+                currentNode = newNode;
+                Root = currentNode;
             }
-            else if (comparison.Invoke(newN.Patient, current.Patient) < 0)
+            else if (comparison.Invoke(newNode.Patient, currentNode.Patient) < 0)
             {
-                if (current.Left == null)
+                if (currentNode.LeftSon == null)
                 {
-                    current.Left = newN;
-                    newN.Parent = current;
-                    Balance(current);
+                    currentNode.LeftSon = newNode;
+                    newNode.Father = currentNode;
+                    Balance(currentNode);
                 }
                 else
                 {
-                    Insert(current.Left, newN, comparison);
+                    Insert(currentNode.LeftSon, newNode, comparison);
                 }
             }
             else
             {
-                if (current.Right == null)
+                if (currentNode.RightSon == null)
                 {
-                    current.Right = newN;
-                    newN.Parent = current;
-                    Balance(current);
+                    currentNode.RightSon = newNode;
+                    newNode.Father = currentNode;
+                    Balance(currentNode);
                 }
                 else
                 {
-                    Insert(current.Right, newN, comparison);
+                    Insert(currentNode.RightSon, newNode, comparison);
                 }
             }
         }
 
-        public void Delete(AVLNode<T> current, AVLNode<T> v, Comparison<T> comparison)
+        public void Delete(AVLNode<T> currentNode, AVLNode<T> value, Comparison<T> comparison)
         {
 
-            if (comparison.Invoke(v.Patient, current.Patient) == 0)
+            if (comparison.Invoke(value.Patient, currentNode.Patient) == 0)
             {
-                if (current.Left != null)
+                if (currentNode.LeftSon != null)
                 {
-                    current.Patient = ReplaceLeft(current.Left).Patient;
-                    Delete(current.Left, ReplaceLeft(current.Left), comparison);
+                    currentNode.Patient = GetReplacementLeft(currentNode.LeftSon).Patient;
+                    Delete(currentNode.LeftSon, GetReplacementLeft(currentNode.LeftSon), comparison);
                 }
-                else if (current.Right != null)
+                else if (currentNode.RightSon != null)
                 {
-                    current.Patient = ReplaceRight(current.Right).Patient;
-                    Delete(current.Right, ReplaceRight(current.Right), comparison);
+                    currentNode.Patient = GetReplacementRight(currentNode.RightSon).Patient;
+                    Delete(currentNode.RightSon, GetReplacementRight(currentNode.RightSon), comparison);
                 }
                 else
                 {
-                    var compareNode = current;
-                    if (current.Parent.Left == compareNode)
+                    var compareNode = currentNode;
+                    if (currentNode.Father.LeftSon == compareNode)
                     {
-                        current.Parent.Left = null;
+                        currentNode.Father.LeftSon = null;
                     }
                     else
                     {
-                        current.Parent.Right = null;
+                        currentNode.Father.RightSon = null;
                     }
-                    Balance(current.Parent);
+                    Balance(currentNode.Father);
                 }
             }
-            else if (comparison.Invoke(v.Patient, current.Patient) < 0)
+            else if (comparison.Invoke(value.Patient, currentNode.Patient) < 0)
             {
-                Delete(current.Left, v, comparison);
+                Delete(currentNode.LeftSon, value, comparison);
             }
             else
             {
-                Delete(current.Right, v, comparison);
+                Delete(currentNode.RightSon, value, comparison);
             }
         }
 
-        private AVLNode<T> ReplaceLeft(AVLNode<T> current)
+        private AVLNode<T> GetReplacementLeft(AVLNode<T> currentNode)
         {
-            if (current.Right != null)
+            if (currentNode.RightSon != null)
             {
-                return ReplaceLeft(current.Right);
+                return GetReplacementLeft(currentNode.RightSon);
             }
             else
             {
-                return current;
+                return currentNode;
             }
         }
-        private AVLNode<T> ReplaceRight(AVLNode<T> current)
+
+        private AVLNode<T> GetReplacementRight(AVLNode<T> currentNode)
         {
-            if (current.Left != null)
+            if (currentNode.LeftSon != null)
             {
-                return ReplaceRight(current.Left);
+                return GetReplacementRight(currentNode.LeftSon);
             }
             else
             {
-                return current;
+                return currentNode;
             }
         }
+
         private void Balance(AVLNode<T> node)
         {
             if (node.GetBalanceIndex() == -2)
             {
-                if (node.Left.GetBalanceIndex() == 1)
+                if (node.LeftSon.GetBalanceIndex() == 1)
                 {
-                    LeftRot(node.Left);
-                    RightRot(node);
+                    LeftRotation(node.LeftSon);
+                    RightRotation(node);
                 }
                 else
                 {
-                    RightRot(node);
+                    RightRotation(node);
                 }
             }
             else if (node.GetBalanceIndex() == 2)
             {
-                if (node.Right.GetBalanceIndex() == -1)
+                if (node.RightSon.GetBalanceIndex() == -1)
                 {
-                    RightRot(node.Right);
-                    LeftRot(node);
+                    RightRotation(node.RightSon);
+                    LeftRotation(node);
                 }
                 else
                 {
-                    LeftRot(node);
+                    LeftRotation(node);
                 }
             }
-            if (node.Parent != null)
+            if (node.Father != null)
             {
-                Balance(node.Parent);
+                Balance(node.Father);
             }
         }
 
-
-        private void RightRot(AVLNode<T> node)
+        private void RightRotation(AVLNode<T> node)
         {
-            AVLNode<T> newLeft = node.Left.Right;
-            node.Left.Right = node;
-            node.Left.Parent = node.Parent;
-            if (node.Parent != null)
+            AVLNode<T> newLeft = node.LeftSon.RightSon;
+            node.LeftSon.RightSon = node;
+            node.LeftSon.Father = node.Father;
+            if (node.Father != null)
             {
-                if (node.Parent.Right == node)
+                if (node.Father.RightSon == node)
                 {
-                    node.Parent.Right = node.Left;
+                    node.Father.RightSon = node.LeftSon;
                 }
                 else
                 {
-                    node.Parent.Left = node.Left;
+                    node.Father.LeftSon = node.LeftSon;
                 }
             }
-            node.Parent = node.Left;
-            node.Left = newLeft;
+            node.Father = node.LeftSon;
+            node.LeftSon = newLeft;
             if (newLeft != null)
             {
-                newLeft.Parent = node;
+                newLeft.Father = node;
             }
 
-            if (node.Parent.Parent == null)
+            if (node.Father.Father == null)
             {
-                Root = node.Parent;
+                Root = node.Father;
             }
         }
 
-
-
-        private void LeftRot(AVLNode<T> node)
+        private void LeftRotation(AVLNode<T> node)
         {
-            AVLNode<T> newRight = node.Right.Left;
-            node.Right.Left = node;
-            node.Right.Parent = node.Parent;
-            if (node.Parent != null)
+            AVLNode<T> newRight = node.RightSon.LeftSon;
+            node.RightSon.LeftSon = node;
+            node.RightSon.Father = node.Father;
+            if (node.Father != null)
             {
-                if (node.Parent.Right == node)
+                if (node.Father.RightSon == node)
                 {
-                    node.Parent.Right = node.Right;
+                    node.Father.RightSon = node.RightSon;
                 }
                 else
                 {
-                    node.Parent.Left = node.Right;
+                    node.Father.LeftSon = node.RightSon;
                 }
             }
-            node.Parent = node.Right;
-            node.Left = newRight;
+            node.Father = node.RightSon;
+            node.RightSon = newRight;
             if (newRight != null)
             {
-                newRight.Parent = node;
+                newRight.Father = node;
             }
-
-            if (node.Parent.Parent == null)
+            if (node.Father.Father == null)
             {
-                Root = node.Parent;
+                Root = node.Father;
             }
         }
 
-        public List<AVLNode<T>> ExtractList()
+        public List<AVLNode<T>> GetList()
         {
-            ResultList = new List<AVLNode<T>>();
+            ReturningList = new List<AVLNode<T>>();
             if (Root != null)
             {
                 InOrder(Root);
             }
-            return ResultList;
+            return ReturningList;
         }
 
-        private void InOrder(AVLNode<T> current)
+        private void InOrder(AVLNode<T> currentNode)
         {
-            if (current.Left != null)
+            if (currentNode.LeftSon != null)
             {
-                InOrder(current.Left);
+                InOrder(currentNode.LeftSon);
             }
-            ResultList.Add(current);
-            if (current.Right != null)
+            ReturningList.Add(currentNode);
+            if (currentNode.RightSon != null)
             {
-                InOrder(current.Right);
+                InOrder(currentNode.RightSon);
             }
         }
-        //Search all nodes that match with the search
+
         public List<T> Search(T Patient, AVLNode<T> node, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
             if (comparison.Invoke(Patient, node.Patient) == 0)
             {
                 Patients.Add(node.Patient);
-                List<T> RepeatedValues = Search(node.Right, Patient, comparison);
+                List<T> RepeatedValues = Search(node.RightSon, Patient, comparison);
                 if (RepeatedValues.Count > 0)
                 {
                     foreach (var item in RepeatedValues)
@@ -245,7 +245,7 @@ namespace ProyectoEDIp.GenericStructures
                         Patients.Add(item);
                     }
                 }
-                RepeatedValues = Search(node.Left, Patient, comparison);
+                RepeatedValues = Search(node.LeftSon, Patient, comparison);
                 if (RepeatedValues.Count > 0)
                 {
                     foreach (var item in RepeatedValues)
@@ -257,9 +257,9 @@ namespace ProyectoEDIp.GenericStructures
             }
             else if (comparison.Invoke(Patient, node.Patient) > 0)
             {
-                if (node.Right != null)
+                if (node.RightSon != null)
                 {
-                    return Search(Patient, node.Right, comparison);
+                    return Search(Patient, node.RightSon, comparison);
                 }
                 else
                 {
@@ -268,9 +268,9 @@ namespace ProyectoEDIp.GenericStructures
             }
             else
             {
-                if (node.Left != null)
+                if (node.LeftSon != null)
                 {
-                    return Search(Patient, node.Left, comparison);
+                    return Search(Patient, node.LeftSon, comparison);
                 }
                 else
                 {
@@ -278,18 +278,19 @@ namespace ProyectoEDIp.GenericStructures
                 }
             }
         }
-        //Recursive search of patient value
+
+
         public AVLNode<T> Search(Comparison<T> comparison, T Patient, AVLNode<T> node)
         {
             if (node != null)
             {
                 if (comparison.Invoke(Patient, node.Patient) < 0)
                 {
-                    return Search(comparison, Patient, node.Left);
+                    return Search(comparison, Patient, node.LeftSon);
                 }
                 else if (comparison.Invoke(Patient, node.Patient) > 0)
                 {
-                    return Search(comparison, Patient, node.Right);
+                    return Search(comparison, Patient, node.RightSon);
                 }
                 else
                 {
@@ -298,7 +299,8 @@ namespace ProyectoEDIp.GenericStructures
             }
             return null;
         }
-        //Recursive node search
+
+
         private List<T> Search(AVLNode<T> node, T Patient, Comparison<T> comparison)
         {
             List<T> Patients = new List<T>();
@@ -308,7 +310,7 @@ namespace ProyectoEDIp.GenericStructures
                 if (comparison.Invoke(Patient, node.Patient) == 0)
                 {
                     Patients.Add(node.Patient);
-                    RepeatedValues = Search(node.Right, Patient, comparison);
+                    RepeatedValues = Search(node.RightSon, Patient, comparison);
                     if (RepeatedValues.Count > 0)
                     {
                         foreach (var item in RepeatedValues)
@@ -316,7 +318,7 @@ namespace ProyectoEDIp.GenericStructures
                             Patients.Add(item);
                         }
                     }
-                    RepeatedValues = Search(node.Left, Patient, comparison);
+                    RepeatedValues = Search(node.LeftSon, Patient, comparison);
                     if (RepeatedValues.Count > 0)
                     {
                         foreach (var item in RepeatedValues)
@@ -328,7 +330,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else if (comparison.Invoke(Patient, node.Patient) > 0)
                 {
-                    RepeatedValues = Search(node.Right, Patient, comparison);
+                    RepeatedValues = Search(node.RightSon, Patient, comparison);
                     if (RepeatedValues.Count > 0)
                     {
                         foreach (var item in RepeatedValues)
@@ -340,7 +342,7 @@ namespace ProyectoEDIp.GenericStructures
                 }
                 else
                 {
-                    RepeatedValues = Search(node.Left, Patient, comparison);
+                    RepeatedValues = Search(node.LeftSon, Patient, comparison);
                     if (RepeatedValues.Count > 0)
                     {
                         foreach (var item in RepeatedValues)
@@ -358,40 +360,37 @@ namespace ProyectoEDIp.GenericStructures
 
         }
 
-        public void EditValue(T newP, AVLNode<T> node, Comparison<T> comparison1, Comparison<T> comparison2)
+        public void ChangeValue(T newPatient, AVLNode<T> node, Comparison<T> comparison1, Comparison<T> comparison2)
         {
             if (node != null)
             {
-                if (comparison1.Invoke(newP, node.Patient) < 0)
+                if (comparison1.Invoke(newPatient, node.Patient) < 0)
                 {
-                    EditValue(newP, node.Left, comparison1, comparison2);
+                    ChangeValue(newPatient, node.LeftSon, comparison1, comparison2);
                 }
-                else if (comparison1.Invoke(newP, node.Patient) == 0)
+                else if (comparison1.Invoke(newPatient, node.Patient) == 0)
                 {
-                    if (comparison2.Invoke(newP, node.Patient) == 0)
+                    if (comparison2.Invoke(newPatient, node.Patient) == 0)
                     {
-                        node.Patient = newP;
+                        node.Patient = newPatient;
                     }
                     else
                     {
-                        if (node.Left != null)
+                        if (node.LeftSon != null)
                         {
-                            EditValue(newP, node.Left, comparison1, comparison2);
+                            ChangeValue(newPatient, node.LeftSon, comparison1, comparison2);
                         }
-                        if (node.Right != null)
+                        if (node.RightSon != null)
                         {
-                            EditValue(newP, node.Right, comparison1, comparison2);
+                            ChangeValue(newPatient, node.RightSon, comparison1, comparison2);
                         }
                     }
                 }
                 else
                 {
-                    EditValue(newP, node.Right, comparison1, comparison2);
+                    ChangeValue(newPatient, node.RightSon, comparison1, comparison2);
                 }
             }
         }
-
-        //
-
     }
 }

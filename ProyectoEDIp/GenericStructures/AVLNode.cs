@@ -9,63 +9,61 @@ namespace ProyectoEDIp.GenericStructures
 {
     public class AVLNode<T> where T : IComparable
     {
+        public AVLNode<T> LeftSon { get; set; }
+        public AVLNode<T> RightSon { get; set; }
+        public AVLNode<T> Father { get; set; }
         public T Patient { get; set; }
-        public AVLNode<T> Right { get; set; }
-        public AVLNode<T> Left { get; set; }
-        public AVLNode<T> Parent { get; set; }
-
 
         public int GetBalanceIndex()
         {
-            if (this.Left != null && this.Right != null)
+            if (this.LeftSon != null && this.RightSon != null)
             {
-                return this.Right.TreeHeight() - this.Left.TreeHeight();
+                return this.RightSon.GetTreeHeight() - this.LeftSon.GetTreeHeight();
             }
-            else if (this.Left == null)
+            else if (this.LeftSon == null)
             {
-                if (this.Right == null)
+                if (this.RightSon == null)
                 {
                     return 0;
                 }
                 else
                 {
-                    return this.Right.TreeHeight();
+                    return this.RightSon.GetTreeHeight();
                 }
             }
             else
             {
-                return this.Left.TreeHeight() * -1;
+                return this.LeftSon.GetTreeHeight() * -1;
             }
         }
 
 
-
-        public int TreeHeight()
+        public int GetTreeHeight()
         {
-            if (this.Left == null && this.Right == null)
+            if (this.LeftSon == null && this.RightSon == null)
             {
                 return 1;
             }
-            else if (this.Left == null || this.Right == null)
+            else if (this.LeftSon == null || this.RightSon == null)
             {
-                if (this.Left == null)
+                if (this.LeftSon == null)
                 {
-                    return this.Right.TreeHeight() + 1;
+                    return this.RightSon.GetTreeHeight() + 1;
                 }
                 else
                 {
-                    return this.Left.TreeHeight() + 1;
+                    return this.LeftSon.GetTreeHeight() + 1;
                 }
             }
             else
             {
-                if (this.Left.TreeHeight() > this.Right.TreeHeight())
+                if (this.LeftSon.GetTreeHeight() > this.RightSon.GetTreeHeight())
                 {
-                    return this.Left.TreeHeight() + 1;
+                    return this.LeftSon.GetTreeHeight() + 1;
                 }
                 else
                 {
-                    return this.    Right.TreeHeight() + 1;
+                    return this.RightSon.GetTreeHeight() + 1;
                 }
             }
         }

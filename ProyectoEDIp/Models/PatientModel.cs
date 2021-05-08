@@ -13,10 +13,11 @@ namespace ProyectoEDIp.Models
         public string Municipio { get; set; }
         [Display(Name = "Symptoms")]
         public string Symptoms { get; set; }
-        [Display(Name = "Infection_Description")]
+        [Display(Name = "InfectionDescription")]
         public string InfectionDescription { get; set; }
         public int EffectivenessChance { get; set; }
-        public void SetEffectiivenessChance (bool PFizer, bool Moderna, bool Johnson)
+
+        public void SetEffectivenessChance (bool PFizer, bool Moderna, bool Johnson)
         {
             EffectivenessChance = 10;
             if (PFizer)
@@ -39,13 +40,13 @@ namespace ProyectoEDIp.Models
             Random RND = new Random();
             if (RND.Next(100) <= EffectivenessChance)
             {
-                Vaccinated = true;
-                Status = "Vaccinated";
+                NotVaccinated = true;
+                Status = "NotVaccinated";
                 return true;
             }
             else
             {
-                Status = "NotVaccinated";
+                Status = "Vaccinated";
                 RegistrationCenter = null;
                 return false;
             }
