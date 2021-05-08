@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using PagedList;
 using ProyectoEDIp.Helpers;
 using ProyectoEDIp.GenericStructures;
 using ProyectoEDIp.Models;
@@ -90,7 +90,7 @@ namespace ProyectoEDIp.Controllers
         {
             try
             {
-                if (HasIncorrectCharacter(collection["Name"]) || HasIncorrectCharacter(collection["LastName"]) || HasIncorrectCharacter(collection["Municipio"]) || HasIncorrectCharacter(collection["Symptoms"]))
+                if (HasWrongCharacter(collection["Name"]) || HasWrongCharacter(collection["LastName"]) || HasWrongCharacter(collection["Municipio"]) || HasWrongCharacter(collection["Symptoms"]))
                 {
                     ModelState.AddModelError("Name", "Por favor ingrese datos no numéricos en los campos pertinentes.");
                     return View("NewCase");
@@ -151,11 +151,11 @@ namespace ProyectoEDIp.Controllers
                     }
                 }
                 Storage.Instance.PatientsHash.Insert(newPatient, newPatient.DPI);
-                Storage.Instance.PatientsByName.AddPatient(Patientinfo, Patientinfo.Comparebyname);
-                Storage.Instance.PatientsByLastName.AddPatient(structurePatient, PatientStructure.CompareByLastName);
-                Storage.Instance.PatientsByCUI.AddPatient(structurePatient, PatientStructure.CompareByCUI);
+                Storage.Instance.PatientsByName.AddPatient(infoPatient, Patientinfo.Comparebyname);
+                Storage.Instance.PatientsByLastName.AddPatient(infoPatient, Patientinfo.ComparebyLastName);
+                Storage.Instance.PatientsByCUI.AddPatient(infoPatient, Patientinfo.ComparebyID);
                 Storage.Instance.CountryStatistics.Suspicious++;
-                SendToHospital(structurePatient);
+                SendToRegistrationCenter(infoPatient);
                 return RedirectToAction("Index");
             }
             catch
@@ -165,7 +165,7 @@ namespace ProyectoEDIp.Controllers
             }
         }
 
-        private bool HasIncorrectCharacter(string data)
+        private bool HasWrongCharacter(string data)
         {
             try
             {
@@ -207,6 +207,144 @@ namespace ProyectoEDIp.Controllers
             }
             return null;
         }
+        public ActionResult PatientsList(int? page, string search, string criteria)
+        {
+            var patientsList = GetPatients(null, null);
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            if (criteria == "Seleccionar Criterio" && search != "")
+            {
+                TempData["Error"] = "Por favor escoja un criterio de búsqueda.";
+                return View(patientsList.ToPagedList(pageNumber, pageSize));
+            }
+            else
+            {
+                patientsList = GetPatients(search, criteria);
+            }
+            if (patientsList.Count == 0)
+            {
+                TempData["Error"] = "No se ha encontrado ningún paciente que coincida con los datos ingresados.";
+            }
+            return View(patientsList.ToPagedList(pageNumber, pageSize));
+        }
+
+        private List<Patientinfo> GetPatients(string search, string criteria)
+        {
+            var list = new List<Patientinfo>();
+            var patient = new Patientinfo();
+            if (search != null && search != "")
+            {
+                switch (criteria)
+                {
+                    case "Nombre":
+                        patient.Name = search;
+                        if (Storage.Instance.RepeatedNames.Contains(patient.Name))
+                        {
+                            list = Storage.Instance.PatientsByName.Search(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname);
+                        }
+                        else
+                        {
+                            list.Add(Storage.Instance.PatientsByName.Search(Patientinfo.Comparebyname, patient, Storage.Instance.PatientsByName.Root).Patient);
+                        }
+                        break;
+                    case "Apellido":
+                        patient.LastName = search;
+                        if (Storage.Instance.RepeatedLNames.Contains(patient.LastName))
+                        {
+                            list = Storage.Instance.PatientsByLastName.Search(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName);
+                        }
+                        else
+                        {
+                            list.Add(Storage.Instance.PatientsByLastName.Search(Patientinfo.ComparebyLastName, patient, Storage.Instance.PatientsByLastName.Root).Patient);
+                        }
+                        break;
+                    case "DPI":
+                        patient.DPI = search;
+                        list.Add(Storage.Instance.PatientsByCUI.Search(Patientinfo.ComparebyID, patient, Storage.Instance.PatientsByCUI.Root).Patient);
+                        break;
+                }
+            }
+            else
+            {
+                foreach (var node in Storage.Instance.PatientsByName.ExtractList())
+                {
+                    list.Add(node.Patient);
+                }
+            }
+            return list;
+        }
+
+        public ActionResult Statistics()
+        {
+            Storage.Instance.CountryStatistics.GetPercentage();
+            if (Storage.Instance.CountryStatistics != null)
+            {
+                return View(Storage.Instance.CountryStatistics);
+            }
+            else
+            {
+                return View(new Statistics());
+            }
+        }
+
+        public ActionResult RegistrationCenterList()
+        {
+            return View(Storage.Instance.RegistrationCenters);
+        }
+
+        public ActionResult RegistrationCenter(string name, string advice)
+        {
+            var showRC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == name);
+            var newqueue = new PriorityQueueG<Patientinfo>();
+            showRC.InfectedList = new List<Patientinfo>();
+            showRC.PatientsList = new List<Patientinfo>();
+            var queueClone = showRC.InfectedQueue;
+            var node = queueClone.GetFirst();
+            while (node != null)
+            {
+                showRC.InfectedList.Add(node.Patient);
+                newqueue.AddPatient(node.Patient.DPI, node.Patient.Appointment, node.Patient, node.Patient.Priority);
+                node = queueClone.GetFirst();
+            }
+            showRC.InfectedQueue = newqueue;
+            newqueue = new PriorityQueueG<Patientinfo>();
+            queueClone = showRC.PatientsQueue;
+            node = queueClone.GetFirst();
+            while (node != null)
+            {
+                showRC.PatientsList.Add(node.Patient);
+                newqueue.AddPatient(node.Patient.DPI, node.Patient.Appointment, node.Patient, node.Patient.Priority);
+                node = queueClone.GetFirst();
+            }
+            showRC.PatientsQueue = newqueue;
+
+            if (advice != "")
+            {
+                TempData["Error"] = advice;
+            }
+            return View(showRC);
+        }
+
+        private int GetMultiplier(string hospital)
+        {
+            switch (hospital)
+            {
+                case "Capital":
+                    return 1;
+                case "Quetzaltenango":
+                    return 2;
+                case "Petén":
+                    return 3;
+                case "Escuintla":
+                    return 4;
+                case "Oriente":
+                    return 5;
+            }
+            return -1;
+        }
+
+
+
 
         public ActionResult About()
         {

@@ -1,4 +1,5 @@
-﻿@model PagedList.IPagedList<ProyectoEDIp.Models.Patientinfo>
+﻿@*model IEnumerable<ProyectoEDIp.Models.Patientinfo>*@
+@model PagedList.IPagedList<ProyectoEDIp.Models.Patientinfo>
 @{
     ViewBag.Title = "PatientsList";
 }
@@ -25,7 +26,7 @@
     <br />
     @Html.TextBox("search")
     <input type="submit" name="value" value="Search" />
- }
+}
 
 <table class="table">
     <tr>
@@ -42,32 +43,35 @@
             @Html.DisplayNameFor(model => model.First().Status)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Vaccine)
+            @Html.DisplayNameFor(model => model.First().RegistrationCenter)
         </th>
     </tr>
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.DPI)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.LastName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Status)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Vaccine)
-    </td>
-</tr>}
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationCenter)
+            </td>
+        </tr>
+}
 
 </table>
 
+
+@* PagedList things*@
 <div>
     Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     de @Model.PageCount
@@ -76,7 +80,7 @@
     {
         @Html.ActionLink("<<", "PantientsList", new { page = 1 })
         @Html.Raw(" ");
-        @Html.ActionLink("< Prev", "PatientsList", new { page = Model.PageNumber - 1 }) 
+        @Html.ActionLink("< Prev", "PatientsList", new { page = Model.PageNumber - 1 })
     }
     else
     {
