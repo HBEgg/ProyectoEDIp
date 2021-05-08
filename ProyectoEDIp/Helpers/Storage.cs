@@ -19,7 +19,7 @@ namespace ProyectoEDIp.Helpers
             }
         }
         public HashG<Vaccines> VaccineHash = new HashG<Vaccines>(50);
-        public HashG<Patientinfo> PatientsHash = new HashG<Patientinfo>(100);
+        public HashG<PatientModel> PatientsHash = new HashG<PatientModel>(100);
         public AVLTreeG<Patientinfo> PatientsByName = new AVLTreeG<Patientinfo>();
         public AVLTreeG<Patientinfo> PatientsByLastName = new AVLTreeG<Patientinfo>();
         public AVLTreeG<Patientinfo> PatientsByDPI = new AVLTreeG<Patientinfo>();

@@ -342,7 +342,7 @@ namespace ProyectoEDIp.Controllers
                     return 3;
                 case "Escuintla":
                     return 4;
-                case "Oriente":
+                case "San Marcos":
                     return 5;
             }
             return -1;
@@ -387,92 +387,123 @@ namespace ProyectoEDIp.Controllers
             {
                 if (RC.VaccinationQueue.Root.Patient.Priority < RC.PatientsQueue.Root.Patient.Priority)
                 {
-                    if (hosp.BedFull())
+                    if (RC.NoVaccines())
                     {
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19, por favor libere una cama." });
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19, por favor libere una cama." });
                     }
                 }
                 else
                 {
-                    var patient = hosp.InfectedQueue.GetFirst().Patient;
-                    var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
+                    var patient = RC.VaccinationQueue.GetFirst().Patient;
+                    var infected = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
                     if (infected)
                     {
-                        patient.Status = "Contagiado";
-                        patient.IsInfected = true;
-                        Storage.Instance.PatientsHash.Search(patient.CUI).Value.PriorityAssignment();
+                        patient.Status = "NotVaccinated";
+                        patient.Vaccinated = true;
+                        Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                         patient.PriorityAssignment();
-                        Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                        Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                        Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                        Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                        Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                        Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                         Storage.Instance.CountryStatistics.Suspicious--;
                         Storage.Instance.CountryStatistics.Infected++;
-                        Storage.Instance.Hospitals.Find(x => x.HospitalName == patient.Hospital).InfectedQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority);
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado contagiado." });
+                        Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).PatientsQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado contagiado." });
                     }
                     else
                     {
-                        patient.Status = "NoInfectado";
-                        Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                        Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                        Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                        patient.Status = "Vaccinated";
+                        Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                        Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                        Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                         Storage.Instance.CountryStatistics.Suspicious--;
-                        return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                     }
                 }
             }
             else
             {
-                if (hosp.SuspiciousQueue.Root == null)
+                if (RC.PatientsQueue.Root == null)
                 {
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "No hay pacientes esperando para realizar la prueba." });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "No hay pacientes esperando para realizar la prueba." });
                 }
-                var patient = hosp.SuspiciousQueue.GetFirst().Patient;
-                var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
+                var patient = RC.PatientsQueue.GetFirst().Patient;
+                var infected = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
                 if (infected)
                 {
-                    patient.Status = "Contagiado";
-                    patient.IsInfected = true;
-                    Storage.Instance.PatientsHash.Search(patient.CUI).Value.PriorityAssignment();
+                    patient.Status = "NotVaccinated";
+                    patient.Vaccinated = true;
+                    Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                     patient.PriorityAssignment();
-                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
                     Storage.Instance.CountryStatistics.Infected++;
-                    if (hosp.BedFull())
+                    if (RC.NoVaccines())
                     {
-                        Storage.Instance.Hospitals.Find(x => x.HospitalName == patient.Hospital).InfectedQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority);
+                        Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).VaccinationQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
                     }
                     else
                     {
-                        Storage.Instance.BedHash.Insert(new Bed() { Patient = patient, Availability = "No Disponible" }, patient.CUI, GetMultiplier(patient.Hospital));
-                        Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList = new List<Bed>();
+                        Storage.Instance.VaccineHash.Insert(new Vaccines() { Patient = patient, Availability = "No Disponible" }, patient.DPI, GetMultiplier(patient.RegistrationCenter));
+                        Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList = new List<Vaccines>();
                         for (int i = 0; i < 10; i++)
                         {
-                            var node = Storage.Instance.BedHash.GetT(i, GetMultiplier(hospital));
+                            var node = Storage.Instance.VaccineHash.GetT(i, GetMultiplier(regiCenter));
                             if (node != null)
                             {
-                                Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Add(node.Value);
+                                Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList.Add(node.Value);
                             }
                         }
-                        Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedsInUse = Storage.Instance.Hospitals.First(x => x.HospitalName == hosp.HospitalName).BedList.Count();
+                        Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesUsed = Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList.Count();
                     }
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado confirmado." });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado confirmado." });
                 }
                 else
                 {
-                    patient.Status = "NoInfectado";
-                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                    patient.Status = "Vaccinated";
+                    Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                 }
             }
-            return RedirectToAction("Hospital");
+            return RedirectToAction("RegistrationCenter");
         }
-
+        public ActionResult GetVaccinated(string code)
+        {
+            var Patient = new Patientinfo() { DPI = code };
+            Patient = Storage.Instance.PatientsByDPI.Search(Patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID).First();
+            Storage.Instance.VaccineHash.Delete(new Vaccines() { Availability = "No Disponible", Patient = Patient }, Patient.DPI, GetMultiplier(Patient.RegistrationCenter));
+            Patient.Status = "Recuperado";
+            Patient.Vaccinated = false;
+            Storage.Instance.PatientsHash.Search(Patient.DPI).Value.Status = "Recuperado";
+            Storage.Instance.PatientsHash.Search(Patient.DPI).Value.Vaccinated = false;
+            Storage.Instance.PatientsByDPI.EditValue(Patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+            Storage.Instance.PatientsByName.EditValue(Patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+            Storage.Instance.PatientsByLastName.EditValue(Patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
+            Storage.Instance.CountryStatistics.Infected--;
+            Storage.Instance.CountryStatistics.Vaccinated++;
+            var hosp = Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter);
+            if (hosp.VaccinationQueue.Root != null)
+            {
+                var patient = hosp.VaccinationQueue.GetFirst().Patient;
+                Storage.Instance.VaccineHash.Insert(new Vaccines() { Patient = patient, Availability = "No Disponible" }, patient.DPI, GetMultiplier(patient.RegistrationCenter));
+            }
+            Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter).VaccinesList = new List<Vaccines>();
+            for (int i = 0; i < 10; i++)
+            {
+                var node = Storage.Instance.VaccineHash.GetT(i, GetMultiplier(Patient.RegistrationCenter));
+                if (node != null)
+                {
+                    Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter).VaccinesList.Add(node.Value);
+                }
+            }
+            Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter).VaccinesUsed = Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter).VaccinesList.Count();
+            return RedirectToAction("RegistrationCenter", new { name = Patient.RegistrationCenter });
+        }
 
         public ActionResult About()
         {
