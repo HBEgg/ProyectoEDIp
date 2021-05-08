@@ -14,9 +14,9 @@ namespace ProyectoEDIp.Models
         public string CenterName { get; set; }
         public List<string> Departments { get; set; }
         public PriorityQueueG<Patientinfo> PatientsQueue { get; set; }
-        public PriorityQueueG<Patientinfo> InfectedQueue { get; set; }
+        public PriorityQueueG<Patientinfo> VaccinationQueue { get; set; }
         public List<Patientinfo> PatientsList { get; set; }
-        public List<Patientinfo> InfectedList { get; set; }
+        public List<Patientinfo> VaccinationList { get; set; }
         [Display(Name = "VaccinesUsed")]
         public int VaccinesUsed { get; set; }
         public List<Vaccines> VaccinesList { get; set; }
@@ -67,7 +67,7 @@ namespace ProyectoEDIp.Models
         }
         public bool NoVaccines()
         {
-            if (VaccinesUsed==10)
+            if (VaccinesUsed==3)
             {
                 return true;
             }
@@ -77,9 +77,9 @@ namespace ProyectoEDIp.Models
             }
         }
 
-        public bool InfectedQueueFull()
+        public bool VaccinationQueueFull()
         {
-            return InfectedQueue.IsFull();
+            return VaccinationQueue.IsFull();
         }
 
         public bool PatientsQueueFull()

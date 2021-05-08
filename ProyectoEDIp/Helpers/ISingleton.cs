@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using ProyectoEDIp.Models;
 namespace ProyectoEDIp.Models
 {
     public interface ISingleton
     {
-        //CQueue CQueue { get; set; }
-        //CQueue[] Array { get; set; }
-        //List<Patientinfo> patientsinf { get; set; }
+        //List<Patientinfo> DataSource { get; set; }
+        //List<RegistrationCenter> RegistrationCenters { get; set; }
+        //Statistics CountryStatistics { get; set; }
+        //List<string> RepeatedNames { get; set; }
+        //List<string> RepeatedLNames { get; set; }
     }
 }

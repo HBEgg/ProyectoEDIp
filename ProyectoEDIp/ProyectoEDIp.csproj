@@ -140,6 +140,7 @@
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Models\Patientinfo.cs" />
+    <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\RegistrationCenter.cs" />
     <Compile Include="Models\Statistics.cs" />
     <Compile Include="Models\Vaccines.cs" />
@@ -180,7 +181,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Patient.cshtml" />
-    <Content Include="Views\Home\Statistics.cshtml" />
     <Content Include="Views\Shared\NewLayout.cshtml" />
     <Content Include="Views\Vaccine\Index.cshtml" />
     <Content Include="Views\Vaccine\About.cshtml" />

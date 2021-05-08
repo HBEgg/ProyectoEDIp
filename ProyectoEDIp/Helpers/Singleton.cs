@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Threading.Tasks;
+using ProyectoEDIp.Models;
 namespace ProyectoEDIp.Helpers
 {
-    public class Singleton
+    public class Singleton :ISingleton
     {
-        //private static Singleton _instance = null; 
-        //public static Singleton Instance
+        //public List<Patientinfo> DataSource { get; set; } = new List<Patientinfo>();
+        //public List<RegistrationCenter> RegistrationCenters = new List<RegistrationCenter>();
+        //public Statistics CountryStatistics = new Statistics();
+        //public List<string> RepeatedNames = new List<string>();
+        //public List<string> RepeatedLNames = new List<string>();
+        //public Singleton()
         //{
-        //    get
-        //    {
-        //        if (_instance == null)
-        //        {
-        //            _instance = new Singleton(); 
-        //        }
-        //        return _instance; 
-        //    }
+
         //}
-        //public CQueue CQueue { get; set;  }
-        //public CQueue[] Array { get; set; }
-        //public List<Patientsinfo> Patientsinf { get; set; }
     }
 }

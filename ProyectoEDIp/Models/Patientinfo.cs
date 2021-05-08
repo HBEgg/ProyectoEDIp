@@ -8,46 +8,19 @@ namespace ProyectoEDIp.Models
 {
     public class Patientinfo :IComparable
     {
-        [Required]
-        [Display(Name = "NameH")]
+        public string DPI { get; set; }
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "LastName")]
         public string LastName { get; set; }
-        [Display(Name = "DPI")]
-        public string DPI { get; set; }
+        [Display(Name = "Age")]
         public int Age { get; set; }
         public int Priority { get; set; }
         public string RegistrationCenter { get; set; }
         public string Status { get; set; }
-        [Display(Name = "Departamento")]
-        public string Departamento { get; set; }
-        [Display(Name = "Municipio")]
-        public string Municipio { get; set; }
-        public int Time { get; set; }
-        [Display(Name = "Symptoms")]
-        public string Symptoms { get; set; }
-        public bool Infected { get; set; }
-
-        [Required(ErrorMessage = "{0} Es requerido")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy}", ApplyFormatInEditMode =true)]
+        public bool Vaccinated { get; set; }
         [Display(Name = "Appointment")]
-        public System.DateTime Appointment { get; set; }
-        public object patientinfo { get; private set; }
-
-        public bool Save () 
-	    {	  
-            try
-            {
-                Helpers.Storage.Instance.PatientList.Add(this);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
-        }
+        public DateTime Appointment { get; set; }
 
         public void PriorityAssignment()
         {
@@ -66,7 +39,7 @@ namespace ProyectoEDIp.Models
         }
 	    public int CompareTo(object obj)
         {
-            return Name.CompareTo(((Patientinfo)obj).Name); 
+            return this.DPI.CompareTo(((Patientinfo)obj).DPI); 
         }
         public static Comparison<Patientinfo> Comparebyname = delegate (Patientinfo patientinfo1, Patientinfo patientinfo2)
         {

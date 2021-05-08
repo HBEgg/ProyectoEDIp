@@ -4,12 +4,12 @@
     ViewBag.Title = "New Patient"; 
     }
 
-<h2>Agregar Sospechoso</h2>
+<h2>Add Patient</h2>
 
 @* Displays textboxes for the user to input the patient's required data *@
 @using (Html.BeginForm())
-{
-@Html.AntiForgeryToken()
+    {
+    @Html.AntiForgeryToken()
                 <div class="form-horizontal">
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
