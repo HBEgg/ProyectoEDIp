@@ -14,19 +14,24 @@ namespace ProyectoEDIp.Models
         [Display(Name = "LastName")]
         public string LastName { get; set; }
         [Display(Name = "DPI")]
-        public int DPI { get; set; }
+        public string DPI { get; set; }
         public int Age { get; set; }
         public int Priority { get; set; }
-        public string Vaccine { get; set; }
+        public string RegistrationCenter { get; set; }
+        public string Status { get; set; }
         [Display(Name = "Departamento")]
         public string Departamento { get; set; }
         [Display(Name = "Municipio")]
         public string Municipio { get; set; }
         public int Time { get; set; }
+        [Display(Name = "Symptoms")]
+        public string Symptoms { get; set; }
+        public bool Infected { get; set; }
 
         [Required(ErrorMessage = "{0} Es requerido")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{dd-MM-yyyy}", ApplyFormatInEditMode =true)]
+        [Display(Name = "Appointment")]
         public System.DateTime Appointment { get; set; }
         public object patientinfo { get; private set; }
 

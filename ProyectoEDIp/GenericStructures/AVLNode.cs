@@ -2,78 +2,71 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ProyectoEDIp.GenericStructures
 {
     public class AVLNode<T> where T : IComparable
     {
         public T Patient { get; set; }
-        public int index { get; set; }
         public AVLNode<T> Right { get; set; }
         public AVLNode<T> Left { get; set; }
         public AVLNode<T> Parent { get; set; }
-        public int height { get; set; }
 
-        public AVLNode(T patient)
-        {
-            this.Patient = patient;
-        }
 
-        public bool Root()
+        public int GetBalanceIndex()
         {
-            if (Parent != null)
+            if (this.Left != null && this.Right != null)
             {
-                return false;
+                return this.Right.TreeHeight() - this.Left.TreeHeight();
+            }
+            else if (this.Left == null)
+            {
+                if (this.Right == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return this.Right.TreeHeight();
+                }
             }
             else
             {
-                return true;
-            }
-        }
-
-        public bool LeafVal()
-        {
-            if (Right == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
+                return this.Left.TreeHeight() * -1;
             }
         }
 
-        public bool RightLeafVal()
+
+
+        public int TreeHeight()
         {
-            if (Right != null)
+            if (this.Left == null && this.Right == null)
             {
-                return true;
+                return 1;
+            }
+            else if (this.Left == null || this.Right == null)
+            {
+                if (this.Left == null)
+                {
+                    return this.Right.TreeHeight() + 1;
+                }
+                else
+                {
+                    return this.Left.TreeHeight() + 1;
+                }
             }
             else
             {
-                return false;
-            }
-        }
-        public bool LeftLeafVal()
-        {
-            if (Left != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool PatientVer()
-        {
-            if (Patient != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
+                if (this.Left.TreeHeight() > this.Right.TreeHeight())
+                {
+                    return this.Left.TreeHeight() + 1;
+                }
+                else
+                {
+                    return this.    Right.TreeHeight() + 1;
+                }
             }
         }
     }

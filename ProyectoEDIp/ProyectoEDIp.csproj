@@ -123,6 +123,8 @@
     <Compile Include="Controllers\VaccineController.cs" />
     <Compile Include="GenericStructures\AVLNode.cs" />
     <Compile Include="GenericStructures\AVLTreeG.cs" />
+    <Compile Include="GenericStructures\HashG.cs" />
+    <Compile Include="GenericStructures\HashNode.cs" />
     <Compile Include="GenericStructures\PQNodeG.cs" />
     <Compile Include="GenericStructures\PriorityQueueG.cs" />
     <Compile Include="Global.asax.cs">
@@ -175,6 +177,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Patient.cshtml" />
     <Content Include="Views\Home\RegistrationCenter.cshtml" />
+    <Content Include="Views\Home\RegistrationCenterList.cshtml" />
+    <Content Include="Views\Home\Statistics.cshtml" />
+    <Content Include="Views\Home\PatientsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

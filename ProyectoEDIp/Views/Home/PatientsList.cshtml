@@ -1,0 +1,99 @@
+﻿@model PagedList.IPagedList<ProyectoEDIp.Models.Patientinfo>
+@{
+    ViewBag.Title = "PatientsList";
+}
+
+<h2>Patients List</h2>
+
+<br />
+<h5><strong>Search Patients</strong></h5>
+<p>Please select the search criteria and then click "Search""</p>
+
+
+<p style="color:darkred"><strong>@TempData["Error"]</strong></p>
+
+
+@using (Html.BeginForm("PatientsList", "RegistrationCenter", FormMethod.Get))
+{
+    <em><strong>Criteria:</strong></em> @* DropDownList that shows the search criteria. *@
+    <select class="form-control" id="criteria" name="criteria">
+        <option>Select Criteria</option>
+        <option>Name</option>
+        <option>Last Name</option>
+        <option>DPI</option>
+    </select> //Obtenido de: https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor
+    <br />
+    @Html.TextBox("search")
+    <input type="submit" name="value" value="Search" />
+ }
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DPI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Vaccine)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.DPI)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Vaccine)
+    </td>
+</tr>}
+
+</table>
+
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    de @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "PantientsList", new { page = 1 })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "PatientsList", new { page = Model.PageNumber - 1 }) 
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Anterior
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "PatientsList", new { page = Model.PageNumber + 1 })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "PatientsList", new { page = Model.PageCount }) }
+    else
+    {
+        @:Siguiente >
+        @Html.Raw("")
+        @:>>
+    }
+</div>
