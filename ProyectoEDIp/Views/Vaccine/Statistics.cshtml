@@ -1,0 +1,44 @@
+﻿@model ProyectoEDIp.Models.Statistics
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Guatemala Statistics</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Infected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Infected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Suspicious)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Suspicious)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Percentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Percentage)%
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vaccinated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vaccinated)
+        </dd>
+
+    </dl>
+</div>

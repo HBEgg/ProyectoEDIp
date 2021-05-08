@@ -95,20 +95,21 @@
 
     @foreach (var item in Model.InfectedList)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.DPI)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.LastName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Age)
-    </td>
-</tr>}
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+        </tr>
+}
 </table>
 
 <h5><strong>Cola de Sospechosos:</strong></h5>
@@ -136,18 +137,19 @@
 
     @foreach (var item in Model.PatientsList)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.DPI)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.LastName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Age)
-    </td>
-</tr>}
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+        </tr>
+}
 </table>

@@ -67,8 +67,8 @@ namespace ProyectoEDIp.Controllers
             var option = collection["Option"];
             switch (option)
             {
-                case "AddCase":
-                    return RedirectToAction("AddCase");
+                case "RegisterPatient":
+                    return RedirectToAction("RegisterPatient");
                 case "RegistrationCenterList":
                     return RedirectToAction("RegistrationCenterList");
                 case "PatientsList":
@@ -80,7 +80,7 @@ namespace ProyectoEDIp.Controllers
         }
 
 
-        public ActionResult NewCase()
+        public ActionResult RegisterPatient()
         {
             return View();
         }
@@ -90,9 +90,9 @@ namespace ProyectoEDIp.Controllers
         {
             try
             {
-                if (HasWrongCharacter(collection["Name"]) || HasWrongCharacter(collection["LastName"]) || HasWrongCharacter(collection["Municipio"]) || HasWrongCharacter(collection["Symptoms"]))
+                if (HasWrongCharacter(collection["NameH"]) || HasWrongCharacter(collection["LastName"]) || HasWrongCharacter(collection["Municipio"]) || HasWrongCharacter(collection["Symptoms"]))
                 {
-                    ModelState.AddModelError("Name", "Por favor ingrese datos no numéricos en los campos pertinentes.");
+                    ModelState.AddModelError("NameH", "Por favor ingrese datos no numéricos en los campos pertinentes.");
                     return View("NewCase");
                 }
                 if (int.Parse(collection["Age"]) < 0 || int.Parse(collection["Age"]) > 122)
@@ -115,7 +115,7 @@ namespace ProyectoEDIp.Controllers
                 }
                 var newPatient = new Patientinfo()
                 {
-                    Name = collection["Name"],
+                    Name = collection["NameH"],
                     LastName = collection["LastName"],
                     Departamento = collection["Departamento"],
                     RegistrationCenter = GetRegistrationCenter(collection["Department"]),
@@ -141,7 +141,7 @@ namespace ProyectoEDIp.Controllers
                 };
                 foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
                 {
-                    if (patient.Value.Name == collection["Name"])
+                    if (patient.Value.Name == collection["NameH"])
                     {
                         Storage.Instance.RepeatedNames.Add(patient.Value.Name);
                     }

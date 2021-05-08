@@ -9,7 +9,7 @@ namespace ProyectoEDIp.Models
     public class Patientinfo :IComparable
     {
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "NameH")]
         public string Name { get; set; }
         [Display(Name = "LastName")]
         public string LastName { get; set; }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ProyectoEDIp.Models.RegistrationCenter>
+@{
+    ViewBag.Title = "RegistrationCenters";
+}
+
+<h2>Registration Centers List</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CenterName)
+        </th>
+        <th>
+            Vaccines Used
+        </th>
+        <th>
+            Infected in Queue
+        </th>
+        <th>
+            Not Infected in Queue
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CenterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VaccinesUsed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InfectedQueue.PatientsNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientsQueue.PatientsNumber)
+            </td>
+            <td>
+                @Html.ActionLink("Ir al Hospital", "Hospital", new { name = item.CenterName, advice = "" })
+            </td>
+        </tr>
+}
+
+</table>
+
+

@@ -179,15 +179,17 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Patient.cshtml" />
-    <Content Include="Views\Home\RegistrationCenter.cshtml" />
-    <Content Include="Views\Home\RegistrationCenterList.cshtml" />
     <Content Include="Views\Home\Statistics.cshtml" />
-    <Content Include="Views\Home\PatientsList.cshtml" />
     <Content Include="Views\Shared\NewLayout.cshtml" />
+    <Content Include="Views\Vaccine\Index.cshtml" />
+    <Content Include="Views\Vaccine\About.cshtml" />
+    <Content Include="Views\Vaccine\Contact.cshtml" />
+    <Content Include="Views\Vaccine\PatientsList.cshtml" />
+    <Content Include="Views\Vaccine\RegistrationCenter.cshtml" />
+    <Content Include="Views\Vaccine\RegistrationCenterList.cshtml" />
+    <Content Include="Views\Vaccine\Statistics.cshtml" />
+    <Content Include="Views\Vaccine\RegisterPatient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
