@@ -430,6 +430,19 @@ namespace ProyectoEDIp.Controllers
                 BorderRadius = 6,
                 BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.ColorTranslator.FromHtml("#ADE6D8")) //color verde analogo
             });
+            ColumnChart.SetSeries(new DotNet.Highcharts.Options.Series[]
+            {
+                new DotNet.Highcharts.Options.Series
+                {
+                    Name = "Ingreso de Contagiados",
+                    Data = new DotNet.Highcharts.Helpers.Data(new object[]{Storage.Instance.cantVacunados}) //se puede acceder a lo que contiene la lista contagiados, pero se puede hacer una lista de contagiados etc
+                },
+                new DotNet.Highcharts.Options.Series()
+                {
+                    Name = "Ingreso de Sospechosos",
+                    Data = new DotNet.Highcharts.Helpers.Data (new object[]{Storage.Instance.cantPendiente}) //se agrega la cantidad de recuperados que hay recordar que se puede referenciar los datos que ya se han obtenido
+                }
+            });
             return View(ColumnChart);
         }
     

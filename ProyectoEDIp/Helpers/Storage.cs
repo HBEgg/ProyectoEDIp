@@ -27,5 +27,7 @@ namespace ProyectoEDIp.Helpers
         public Statistics CountryStatistics = new Statistics();
         public List<string> RepeatedNames = new List<string>();
         public List<string> RepeatedLNames = new List<string>();
+        public int cantVacunados = 0;
+        public int cantPendiente = 0;
     }
 }
