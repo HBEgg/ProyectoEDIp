@@ -127,11 +127,11 @@ namespace ProyectoEDIp.Controllers
                     InfectionDescription = collection["InfectionDescription"],
                     NotVaccinated = false,
                     Appointment = DateTime.Parse(collection["Appointment"]),
-                    Status = "Sospechoso"
+                    Status = "Paciente"
                 };
                 newPatient.SetEffectivenessChance(GetBool(collection["PFizer"]), GetBool(collection["Moderna"]), GetBool(collection["Johnson"]));
                 newPatient.PriorityAssignment();
-                var structurePatient = new Patientinfo()
+                var infoPatient = new Patientinfo()
                 {
                     Name = newPatient.Name,
                     LastName = newPatient.LastName,
@@ -155,11 +155,11 @@ namespace ProyectoEDIp.Controllers
                     }
                 }
                 Storage.Instance.PatientsHash.Insert(newPatient, newPatient.DPI);
-                Storage.Instance.PatientsByName.AddPatient(structurePatient, Patientinfo.Comparebyname);
-                Storage.Instance.PatientsByLastName.AddPatient(structurePatient, Patientinfo.ComparebyLastName);
-                Storage.Instance.PatientsByDPI.AddPatient(structurePatient, Patientinfo.ComparebyID);
+                Storage.Instance.PatientsByName.AddPatient(infoPatient, Patientinfo.Comparebyname);
+                Storage.Instance.PatientsByLastName.AddPatient(infoPatient, Patientinfo.ComparebyLastName);
+                Storage.Instance.PatientsByDPI.AddPatient(infoPatient, Patientinfo.ComparebyID);
                 Storage.Instance.CountryStatistics.Suspicious++;
-                SendToRegistrationCenter(structurePatient);
+                SendToRegistrationCenter(infoPatient);
                 return RedirectToAction("Index");
             }
             catch
@@ -330,28 +330,161 @@ namespace ProyectoEDIp.Controllers
             return View(showRC);
         }
 
+        //[HttpPost]
+        //public ActionResult Create(PatientModel patientmodel)
+        //{
+        //    if (Storage.Instance.PatientNameinfo.ContainsKey(patientmodel.Name))
+        //    {
+        //        return View();
+        //    }
+        //    patientmodel.Status = "Sospechoso";
+        //    Storage.Instance.PatientNameinfo.Add(patientmodel.Name, patientmodel);
+        //    Storage.Instance.PatientLastNameinfo.Add(patientmodel.LastName, patientmodel);
+        //    Storage.Instance.PatientIDList.Add(patientmodel.DPI, patientmodel);
+        //    return RedirectToAction("Create");
 
+        //}
+        //public ActionResult FindPatient(string name, string lastname, string DPI)
+        //{
+
+        //    // enfermosinfo.Find(x => x.)
+        //    if (String.IsNullOrEmpty(name) && String.IsNullOrEmpty(lastname) && String.IsNullOrEmpty(DPI))
+        //    {
+        //        if (Storage.Instance.PatientNameinfo.Count == 0)
+        //        {
+        //            return RedirectToAction("Create");
+        //        }
+        //        return View(Storage.Instance.PatientNameinfo.Values.ToList());
+        //    }
+        //    else if (!String.IsNullOrEmpty(name))
+        //    {
+        //        //var paciente = arbolpaciente.Buscar(new Enfermos() { Nombre = nombre }, arbolpaciente.Raiz, Enfermos.CompararPorNombre);
+        //        if (Storage.Instance.PatientNameinfo.ContainsKey(name))
+        //        {
+        //            return View(Storage.Instance.PatientNameinfo.Values.Where(x => x.Name == name));
+        //        }
+        //    }
+        //    else if (!String.IsNullOrEmpty(lastname))
+        //    {
+        //        //var paciente = arbolpaciente.Buscar(new Enfermos() { Apellido = apellido }, arbolpaciente.Raiz, Enfermos.CompararPorApellido
+        //        if (Storage.Instance.PatientLastNameinfo.ContainsKey(lastname))
+        //        {
+        //            return View(Storage.Instance.PatientLastNameinfo.Values.Where(x => x.LastName == lastname));
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //var paciente = arbolpaciente.Buscar(new Enfermos() { Dpi = DPI }, arbolpaciente.Raiz, Enfermos.CompararPorDPI);
+        //        if (Storage.Instance.PatientIDList.ContainsKey(DPI))
+        //        {
+        //            var paciente = Storage.Instance.PatientIDList[DPI];
+        //            return View(Storage.Instance.PatientIDList.Values.Where(x => x.DPI == DPI));
+        //        }
+        //    }
+        //    return View(Storage.Instance.PatientIDList.Values.ToList());
+        //}
+
+        //public ActionResult Statistics()
+        //{
+        //    Highcharts ColumnChart = new Highcharts("ColumnChart");
+        //    ColumnChart.InitChart(new DotNet.Highcharts.Options.Chart()
+        //    {
+        //        Type = DotNet.Highcharts.Enums.ChartTypes.Column,
+        //        BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.Color.BlanchedAlmond),
+        //        Style = "fontWeight: 'Bold' , FontSize: '17ptx'",
+        //        BorderColor = System.Drawing.Color.Azure,
+        //        BorderRadius = 0,
+        //        BorderWidth = 2,
+        //    });
+        //    ColumnChart.SetTitle(new DotNet.Highcharts.Options.Title()
+        //    {
+        //        Text = "Gráfica de Vacunación"
+        //    });
+        //    ColumnChart.SetSubtitle(new DotNet.Highcharts.Options.Subtitle() // subtitulo y descripción de la gráfica 
+        //    {
+        //        Text = "Cantidad de personas vacunadas"
+        //    });
+        //    ColumnChart.SetXAxis(new DotNet.Highcharts.Options.XAxis()     //obtiene la información de los datos que irán en el eje de las x
+        //    {
+        //        Type = DotNet.Highcharts.Enums.AxisTypes.Category,
+        //        Title = new DotNet.Highcharts.Options.XAxisTitle() { Text = "Casos", Style = "fontWeight : 'bold' , fontSize: '17ptx'" },
+        //        Categories = new[] { "Ingreso de Pacientes", "Personas vacunadas" }
+
+        //    });
+        //    ColumnChart.SetYAxis(new DotNet.Highcharts.Options.YAxis()  //obtiene la información de los datos que irán en el eje de las y
+        //    {
+        //        Title = new DotNet.Highcharts.Options.YAxisTitle()
+        //        {
+        //            Text = "Cantidades",
+        //            Style = "fontWeight: 'bold', fontSize: '17ptx'"
+        //        },
+        //        ShowFirstLabel = true,  //muestra que los datos si se han tomado con validez 
+        //        ShowLastLabel = true,
+        //        Min = 0 //empieza desde el valor de 0
+        //    });
+        //    ColumnChart.SetLegend(new DotNet.Highcharts.Options.Legend
+        //    {
+        //        Enabled = true,
+        //        BorderColor = System.Drawing.Color.Aquamarine,
+        //        BorderRadius = 6,
+        //        BackgroundColor = new DotNet.Highcharts.Helpers.BackColorOrGradient(System.Drawing.ColorTranslator.FromHtml("#ADE6D8")) //color verde analogo
+        //    });
+        //    return View(ColumnChart);
+        //}
+        //}
         private int GetMultiplier(string RC)
         {
             switch (RC)
             {
-                case "Capital":
+                case "Alta Verapaz":
+                    return 1;
+                case "Baja Verapaz":
+                    return 2;
+                case "Chimaltenango":
+                    return 3;
+                case "Escuintla":
+                    return 4;
+                case "El Peten":
+                    return 5;
+                case "El Progreso":
                     return 1;
                 case "Quetzaltenango":
                     return 2;
                 case "Petén":
                     return 3;
-                case "Escuintla":
+                case "Guatemala":
+                    return 4;
+                case "Huehuetenango":
+                    return 5;
+                case "Quiche":
+                    return 1;
+                case "Izabal":
+                    return 2;
+                case "Jalapa":
+                    return 3;
+                case "Jutiapa":
                     return 4;
                 case "San Marcos":
                     return 5;
+                case "Retalhuleu":
+                    return 1;
+                case "Sacatepequez":
+                    return 2;
+                case "Santa Rosa":
+                    return 3;
+                case "Suchitepequez":
+                    return 4;
+                case "Zacapa":
+                    return 5;
+                case "Totonicapan":
+                    return 4;
             }
             return -1;
         }
 
-        public ActionResult Test(string regiCenter)
+        public ActionResult Test(string registrationCenter)
         {
-            var RC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == regiCenter);
+            var RC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == registrationCenter);
             if (RC.VaccinationQueueFull())
             {
                 return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
@@ -362,26 +495,26 @@ namespace ProyectoEDIp.Controllers
                 var vaccinated = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
                 if (vaccinated)
                 {
-                    patient.Status = "NotVaccinated";
-                    patient.Vaccinated = true;
+                    patient.Status = "NoVacunado";
+                    patient.NotVaccinated = true;
                     Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                     patient.PriorityAssignment();
                     Storage.Instance.PatientsByDPI.ChangeValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    Storage.Instance.CountryStatistics.Infected++;
+                    Storage.Instance.CountryStatistics.Vaccinated++;
                     Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).VaccinationQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
-                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado vaccinado." });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente no habia sido vacunado." });
                 }
                 else
                 {
-                    patient.Status = "Vaccinated";
+                    patient.Status = "Vacunado";
                     Storage.Instance.PatientsByDPI.ChangeValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha sido vacunado ya antes" });
                 }
             }
             else if (RC.VaccinationQueue.Root != null)
@@ -390,7 +523,7 @@ namespace ProyectoEDIp.Controllers
                 {
                     if (RC.NoVaccines())
                     {
-                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "Hay un paciente que necesita ser atendido antes de que realice más pruebas de COVID-19, por favor libere una cama." });
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "Ya no quedan más vacunas, por favor conseguir más." });
                     }
                 }
                 else
@@ -399,26 +532,26 @@ namespace ProyectoEDIp.Controllers
                     var infected = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
                     if (infected)
                     {
-                        patient.Status = "NotVaccinated";
-                        patient.Vaccinated = true;
+                        patient.Status = "NoVacunado";
+                        patient.NotVaccinated = true;
                         Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                         patient.PriorityAssignment();
                         Storage.Instance.PatientsByDPI.ChangeValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
                         Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                         Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                         Storage.Instance.CountryStatistics.Suspicious--;
-                        Storage.Instance.CountryStatistics.Infected++;
+                        Storage.Instance.CountryStatistics.Vaccinated++;
                         Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).PatientsQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
-                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado contagiado." });
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente no habia sido vacunado." });
                     }
                     else
                     {
-                        patient.Status = "Vaccinated";
+                        patient.Status = "Vacunado";
                         Storage.Instance.PatientsByDPI.ChangeValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
                         Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                         Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                         Storage.Instance.CountryStatistics.Suspicious--;
-                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                        return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha sido vacunado ya antes" });
                     }
                 }
             }
@@ -432,8 +565,8 @@ namespace ProyectoEDIp.Controllers
                 var infected = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
                 if (infected)
                 {
-                    patient.Status = "NotVaccinated";
-                    patient.Vaccinated = true;
+                    patient.Status = "NoVacunado";
+                    patient.NotVaccinated = true;
                     Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                     patient.PriorityAssignment();
                     Storage.Instance.PatientsByDPI.ChangeValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
@@ -451,7 +584,7 @@ namespace ProyectoEDIp.Controllers
                         Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList = new List<Vaccines>();
                         for (int i = 0; i < 10; i++)
                         {
-                            var node = Storage.Instance.VaccineHash.GetT(i, GetMultiplier(regiCenter));
+                            var node = Storage.Instance.VaccineHash.GetT(i, GetMultiplier(registrationCenter));
                             if (node != null)
                             {
                                 Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList.Add(node.Value);
@@ -459,7 +592,7 @@ namespace ProyectoEDIp.Controllers
                         }
                         Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesUsed = Storage.Instance.RegistrationCenters.First(x => x.CenterName == RC.CenterName).VaccinesList.Count();
                     }
-                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado confirmado." });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente no ha sido vacunado pero si ha sido realocado para otra cita" });
                 }
                 else
                 {
@@ -468,7 +601,7 @@ namespace ProyectoEDIp.Controllers
                     Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
                     Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ya había sido vacunado antes" });
                 }
             }
             return RedirectToAction("RegistrationCenter");
@@ -479,18 +612,18 @@ namespace ProyectoEDIp.Controllers
             Patient = Storage.Instance.PatientsByDPI.Search(Patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID).First();
             Storage.Instance.VaccineHash.Delete(new Vaccines() { Availability = "No Disponible", Patient = Patient }, Patient.DPI, GetMultiplier(Patient.RegistrationCenter));
             Patient.Status = "Recuperado";
-            Patient.Vaccinated = false;
+            Patient.NotVaccinated = false;
             Storage.Instance.PatientsHash.Search(Patient.DPI).Value.Status = "Recuperado";
-            Storage.Instance.PatientsHash.Search(Patient.DPI).Value.Vaccinated = false;
+            Storage.Instance.PatientsHash.Search(Patient.DPI).Value.NotVaccinated = false;
             Storage.Instance.PatientsByDPI.ChangeValue(Patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
             Storage.Instance.PatientsByName.ChangeValue(Patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
             Storage.Instance.PatientsByLastName.ChangeValue(Patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
             Storage.Instance.CountryStatistics.Infected--;
             Storage.Instance.CountryStatistics.Vaccinated++;
-            var hosp = Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter);
-            if (hosp.VaccinationQueue.Root != null)
+            var RC = Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter);
+            if (RC.VaccinationQueue.Root != null)
             {
-                var patient = hosp.VaccinationQueue.GetFirst().Patient;
+                var patient = RC.VaccinationQueue.GetFirst().Patient;
                 Storage.Instance.VaccineHash.Insert(new Vaccines() { Patient = patient, Availability = "No Disponible" }, patient.DPI, GetMultiplier(patient.RegistrationCenter));
             }
             Storage.Instance.RegistrationCenters.First(x => x.CenterName == Patient.RegistrationCenter).VaccinesList = new List<Vaccines>();

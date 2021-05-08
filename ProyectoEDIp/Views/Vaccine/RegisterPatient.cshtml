@@ -7,116 +7,120 @@
 <h2>Add Patient</h2>
 
 @using (Html.BeginForm())
-    {
+{
     @Html.AntiForgeryToken()
-                <div class="form-horizontal">
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    @* DropDownList obtained from: https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor *@
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <select class="form-control" id="Departamento" name="Departamento">
-                                <option>Select Department</option>
-                                <option>Alta Verapaz</option>
-                                <option>Baja Verapaz</option>
-                                <option>Chiquimula</option>
-                                <option>Petén</option>
-                                <option>El Progreso</option>
-                                <option>Quiché</option>
-                                <option>Escuintla</option>
-                                <option>Guatemala</option>
-                                <option>Huehuetenango</option>
-                                <option>Izabal</option>
-                                <option>Jalapa</option>
-                                <option>Jutiapa</option>
-                                <option>Quetzaltenango</option>
-                                <option>Retalhuleu</option>
-                                <option>Sacatepéquez</option>
-                                <option>San Marcos</option>
-                                <option>Santa Rosa</option>
-                                <option>Sololá</option>
-                                <option>Suchitepequez</option>
-                                <option>Totonicapán</option>
-                                <option>Zacapa</option>
-                            </select>
-                        </div>
-                        @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
-                    </div>
+        @* DropDownList obtained from: https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor *@
+    <div class="form-group">
+        @Html.LabelFor(model => model.Departamento, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select class="form-control" id="Departamento" name="Departamento">
+                <option>Seleccionar Departamento</option>
+                <option>Alta Verapaz</option>
+                <option>Baja Verapaz</option>
+                <option>Chiquimula</option>
+                <option>Petén</option>
+                <option>El Progreso</option>
+                <option>Quiché</option>
+                <option>Escuintla</option>
+                <option>Guatemala</option>
+                <option>Huehuetenango</option>
+                <option>Izabal</option>
+                <option>Jalapa</option>
+                <option>Jutiapa</option>
+                <option>Quetzaltenango</option>
+                <option>Retalhuleu</option>
+                <option>Sacatepéquez</option>
+                <option>San Marcos</option>
+                <option>Santa Rosa</option>
+                <option>Sololá</option>
+                <option>Suchitepequez</option>
+                <option>Totonicapán</option>
+                <option>Zacapa</option>
+            </select>
+        </div>
+        @Html.ValidationMessageFor(model => model.Departamento, "", new { @class = "text-danger" })
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Municipio, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Municipio, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Municipio, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Municipio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Municipio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Municipio, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Symptoms, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Symptoms, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Symptoms, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Symptoms, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Symptoms, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Symptoms, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.DPI, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.DPI, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.DPI, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DPI, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DPI, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DPI, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                    @Html.LabelFor(model => model.Appointment, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="form-group" style="margin-left: 195px">
-                        <input id="ArrivalDate" type="datetime-local" name="ArrivalDate" />
-                    </div>
+        @Html.LabelFor(model => model.Appointment, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group" style="margin-left: 195px">
+            <input id="Appointment" type="datetime-local" name="Appointment" />
+        </div>
 
-                <div class="form-group">
-                        @Html.LabelFor(model => model.InfectionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <p style="margin-top: 10px"><strong>Seleccione :</strong></p>
-                            @Html.CheckBox("PFizer", false)<strong>PFizer</strong>
-                            <br />
-                            @Html.CheckBox("Moderna", false)<strong>Moderna</strong>
-                            <br />
-                            @Html.CheckBox("Johnson", false)<strong>Johnson</strong>
-                            <br />
-                            <br />
-                            <p><strong>Si desea agregar alguna descripción adicional del posible contagio puede ingresarla a continuación:</strong></p>
-                            @Html.TextAreaFor(model => model.InfectionDescription, new { htmlAttributes = new { @class = "form-control" } })
-                            <br />
-                            <font color="red"><strong>@Html.ValidationMessageFor(model => model.InfectionDescription, "", new { @class = "text-danger" })</strong></font>
-                        </div>
-                        </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Ingresar" class="btn btn-default" />
-                        </div>
-                    </div>
-                </div>}
+        @* Shows different textboxes in order to get the values to calculate the patient's infection chance *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.InfectionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p style="margin-top: 10px"><strong>Select the type of vaccine you choose:</strong></p>
+                @Html.CheckBox("PFizer", false) <strong>PFizer</strong>
+                <br />
+                @Html.CheckBox("Moderna", false) <strong>Moderna</strong>
+                <br />
+                @Html.CheckBox("Johnson", false) <strong>Johnson</strong>
+                <br />
+                <br />
+                <br />
+                <p><strong>Si desea agregar alguna descripción adicional del posible contagio puede ingresarla a continuación:</strong></p>
+                @Html.TextAreaFor(model => model.InfectionDescription, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <font color="red"><strong>@Html.ValidationMessageFor(model => model.InfectionDescription, "", new { @class = "text-danger" })</strong></font>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ingresar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

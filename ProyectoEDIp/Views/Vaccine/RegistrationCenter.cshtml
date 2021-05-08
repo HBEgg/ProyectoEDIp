@@ -22,7 +22,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.VaccinesUsed)/10
+            @Html.DisplayFor(model => model.VaccinesUsed)/3
         </dd>
     </dl>
 </div>
@@ -71,9 +71,8 @@
 </table>
 
 
-<h5><strong>Cola de Contagiados:</strong></h5>
+<h5><strong>Cola de Vacunados:</strong></h5>
 
-@* Display for InfectedQueue *@
 <br />
 <table class="table">
     <tr>
@@ -111,7 +110,7 @@
 }
 </table>
 
-<h5><strong>Cola de Sospechosos:</strong></h5>
+<h5><strong>Cola de No Vacunados Aún:</strong></h5>
 <p style="color:darkred"><strong>@TempData["Error"]</strong></p>
 <br />
 @Html.ActionLink("Realizar prueba", "Test", new { hospital = Model.CenterName })

@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.PatientsQueue.PatientsNumber)
             </td>
             <td>
-                @Html.ActionLink("Ir al Hospital", "Hospital", new { name = item.CenterName, advice = "" })
+                @Html.ActionLink("Go to RegistrationCenter", "RegistrationCenter", new { name = item.CenterName, advice = "" })
             </td>
         </tr>
 }
