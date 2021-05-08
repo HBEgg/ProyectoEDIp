@@ -31,37 +31,68 @@ namespace ProyectoEDIp.Models
             Departments = new List<string>();
             switch(CenterName)
             {
-                case "Capital":
+                case "Guatemala":
                     Departments.Add("Guatemala");
-                    Departments.Add("Sacatepéquez");
+                    break;
+                case "Alta Verapaz":
+                    Departments.Add("Alta Verapaz");
+                    break;
+                case "Baja Verapaz":
+                    Departments.Add("Baja Verapaz");
+                    break;
+                case "Chimaltenango":
                     Departments.Add("Chimaltenango");
                     break;
-                case "Quetzaltenango":
-                    Departments.Add("Quetzaltenango");
-                    Departments.Add("Totonicapán");
-                    Departments.Add("San Marcos");
-                    Departments.Add("Huehuetenango");
-                    break;
-                case "Petén":
-                    Departments.Add("Petén");
-                    Departments.Add("Alta Verapaz");
-                    Departments.Add("Baja verapaz");
-                    Departments.Add("Sololá");
-                    Departments.Add("Quiché");
+                case "El Progreso":
+                    Departments.Add("El Progreso");
                     break;
                 case "Escuintla":
                     Departments.Add("Escuintla");
-                    Departments.Add("Santa Rosa");
+                    break;
+                case "Huehuetenango":
+                    Departments.Add("Huehuetenango");
+                    break;
+                case "Izabal":
+                    Departments.Add("Izabal");
+                    break;
+                case "Jalapa":
+                    Departments.Add("Jalapa");
+                    break;
+                case "Jutiapa":
                     Departments.Add("Jutiapa");
-                    Departments.Add("Suchitepéquez");
+                    break;
+                case "Petén":
+                    Departments.Add("Petén");
+                    break;
+                case "Quetzaltenango":
+                    Departments.Add("Quetzaltenango");
+                    break;
+                case "Quiche":
+                    Departments.Add("Quiché");
+                    break;
+                case "Retalhuleu":
                     Departments.Add("Retalhuleu");
                     break;
-                case "Oriente":
-                    Departments.Add("Izabal");
-                    Departments.Add("Zacapa");
-                    Departments.Add("Chiquimula");
-                    Departments.Add("Jalapa");
-                    Departments.Add("El Progreso");
+                case "Sacatepequez":
+                    Departments.Add("Sacatepequez");
+                    break;
+                case "San Marcos":
+                    Departments.Add("San Marcos");
+                    break;
+                case "Santa Rosa":
+                    Departments.Add("Santa Rosa");
+                    break;
+                case "Suchiitepequez":
+                    Departments.Add("Suchiitepequez");
+                    break;
+                case "Quiquimula":
+                    Departments.Add("Quiquimula");
+                    break;
+                case "Solola":
+                    Departments.Add("Quetzaltenango");
+                    break;
+                case "Totonicapan":
+                    Departments.Add("Totonicapan");
                     break;
             }
         }

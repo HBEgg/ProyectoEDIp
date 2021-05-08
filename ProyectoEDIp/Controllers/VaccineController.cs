@@ -101,9 +101,9 @@ namespace ProyectoEDIp.Controllers
                     ModelState.AddModelError("Age", "Por favor ingrese una edad válida");
                     return View("RegisterPatient");
                 }
-                else if (collection["Departmento"] == "Seleccionar Departamento")
+                else if (collection["Departamento"] == "Seleccionar Departamento")
                 {
-                    ModelState.AddModelError("Departmento", "Por favor seleccione un departamento");
+                    ModelState.AddModelError("Departamento", "Por favor seleccione un departamento");
                     return View("RegisterPatient");
                 }
                 foreach (var patient in Storage.Instance.PatientsHash.GetAsNodes())
@@ -118,8 +118,8 @@ namespace ProyectoEDIp.Controllers
                 {
                     Name = collection["Name"],
                     LastName = collection["LastName"],
-                    Departamento = collection["Departmento"],
-                    RegistrationCenter = GetRegistrationCenter(collection["Departmento"]),
+                    Departamento = collection["Departamento"],
+                    RegistrationCenter = GetRegistrationCenter(collection["Departamento"]),
                     Municipio = collection["Municipio"],
                     Symptoms = collection["Symptoms"],
                     DPI = collection["DPI"],
