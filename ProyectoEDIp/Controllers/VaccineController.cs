@@ -355,37 +355,37 @@ namespace ProyectoEDIp.Controllers
             {
                 return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
             }
-            else if (RC.BedFull())
+            else if (RC.NoVaccines())
             {
-                var patient = hosp.SuspiciousQueue.GetFirst().Patient;
-                var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
-                if (infected)
+                var patient = RC.PatientsQueue.GetFirst().Patient;
+                var vaccinated = Storage.Instance.PatientsHash.Search(patient.DPI).Value.VaccinationTest();
+                if (vaccinated)
                 {
-                    patient.Status = "Contagiado";
-                    patient.IsInfected = true;
-                    Storage.Instance.PatientsHash.Search(patient.CUI).Value.PriorityAssignment();
+                    patient.Status = "NotVaccinated";
+                    patient.Vaccinated = true;
+                    Storage.Instance.PatientsHash.Search(patient.DPI).Value.PriorityAssignment();
                     patient.PriorityAssignment();
-                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                    Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
                     Storage.Instance.CountryStatistics.Infected++;
-                    Storage.Instance.Hospitals.Find(x => x.HospitalName == patient.Hospital).InfectedQueue.AddPatient(patient.CUI, patient.ArrivalDate, patient, patient.Priority);
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "El paciente ha resultado contagiado." });
+                    Storage.Instance.RegistrationCenters.Find(x => x.CenterName == patient.RegistrationCenter).VaccinationQueue.AddPatient(patient.DPI, patient.Appointment, patient, patient.Priority);
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "El paciente ha resultado vaccinado." });
                 }
                 else
                 {
-                    patient.Status = "NoInfectado";
-                    Storage.Instance.PatientsByCUI.ChangeValue(patient, Storage.Instance.PatientsByCUI.Root, PatientStructure.CompareByCUI, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByName.ChangeValue(patient, Storage.Instance.PatientsByName.Root, PatientStructure.CompareByName, PatientStructure.CompareByCUI);
-                    Storage.Instance.PatientsByLastName.ChangeValue(patient, Storage.Instance.PatientsByLastName.Root, PatientStructure.CompareByLastName, PatientStructure.CompareByCUI);
+                    patient.Status = "Vaccinated";
+                    Storage.Instance.PatientsByDPI.EditValue(patient, Storage.Instance.PatientsByDPI.Root, Patientinfo.ComparebyID, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByName.EditValue(patient, Storage.Instance.PatientsByName.Root, Patientinfo.Comparebyname, Patientinfo.ComparebyID);
+                    Storage.Instance.PatientsByLastName.EditValue(patient, Storage.Instance.PatientsByLastName.Root, Patientinfo.ComparebyLastName, Patientinfo.ComparebyID);
                     Storage.Instance.CountryStatistics.Suspicious--;
-                    return RedirectToAction("Hospital", new { name = hosp.HospitalName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
+                    return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La prueba del paciente ha salido negativa, se ha descartado su caso" });
                 }
             }
-            else if (hosp.InfectedQueue.Root != null)
+            else if (RC.VaccinationQueue.Root != null)
             {
-                if (hosp.InfectedQueue.Root.Patient.Priority < hosp.SuspiciousQueue.Root.Patient.Priority)
+                if (RC.VaccinationQueue.Root.Patient.Priority < RC.PatientsQueue.Root.Patient.Priority)
                 {
                     if (hosp.BedFull())
                     {
