@@ -330,16 +330,34 @@ namespace ProyectoEDIp.Controllers
         }
 
 
-        public ActionResult Test(string Center)
+        private int GetMultiplier(string RC)
         {
-            var RC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == Center);
+            switch (RC)
+            {
+                case "Capital":
+                    return 1;
+                case "Quetzaltenango":
+                    return 2;
+                case "Petén":
+                    return 3;
+                case "Escuintla":
+                    return 4;
+                case "Oriente":
+                    return 5;
+            }
+            return -1;
+        }
+
+        public ActionResult Test(string regiCenter)
+        {
+            var RC = Storage.Instance.RegistrationCenters.Find(x => x.CenterName == regiCenter);
             if (RC.VaccinationQueueFull())
             {
                 return RedirectToAction("RegistrationCenter", new { name = RC.CenterName, advice = "La cola de infectados está llena, por favor libere una cama antes de continuar." });
             }
-            else if (RC.NoVaccines())
+            else if (RC.BedFull())
             {
-                var patient = RC.SuspiciousQueue.GetFirst().Patient;
+                var patient = hosp.SuspiciousQueue.GetFirst().Patient;
                 var infected = Storage.Instance.PatientsHash.Search(patient.CUI).Value.InfectionTest();
                 if (infected)
                 {
@@ -454,27 +472,6 @@ namespace ProyectoEDIp.Controllers
             }
             return RedirectToAction("Hospital");
         }
-
-
-        private int GetMultiplier(string hospital)
-        {
-            switch (hospital)
-            {
-                case "Capital":
-                    return 1;
-                case "Quetzaltenango":
-                    return 2;
-                case "Petén":
-                    return 3;
-                case "Escuintla":
-                    return 4;
-                case "Oriente":
-                    return 5;
-            }
-            return -1;
-        }
-
-
 
 
         public ActionResult About()
