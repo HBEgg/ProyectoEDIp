@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Structures
 {
-    public class AVLTree<T>
+    public class AVLTree<T> where T : IComparable
     {
-        public AVLNode<T> Root { get; set; }
+
+        public AVLNode<T> Root;
         public bool Empty { get { return Root == null; } }
         int height = 0;
         public int newvalue = 0; 
